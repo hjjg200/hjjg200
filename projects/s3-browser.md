@@ -99,9 +99,9 @@ $auth = array(
 
 ### Error Handling
 
-In case of an error:
+In case of an error, it depends on the variable `$debug`[6](#d-6) :
 
-- `$debug === FALSE` (which is a private variable of a s3_browser instance) : HTML response 500
+- `$debug === FALSE` : HTML response 500
 - `$debug === TRUE` : sprays the error message
 
 ### Further Details
@@ -111,6 +111,7 @@ In case of an error:
 3. <a name='d-3'></a> `video/mp4`, `video/x-matroska`, `audio/aac`, etc.
 4. <a name='d-4'></a> Echoes and flushes the content in chunks
 5. <a name='d-5'></a> Streams the file with the appropriate MIME type so that applications like VLC can stream them.
+6. <a name='d-6'></a> A private variable of `class s3_browser`
 
 ### As for HTML and CSS
 
