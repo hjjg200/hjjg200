@@ -99,7 +99,10 @@ $auth = array(
 
 ### Error Handling
 
-In case of an error, 
+In case of an error:
+
+- `$debug === FALSE` (which is a private variable of a s3_browser instance) : HTML response 500
+- `$debug === TRUE` : sprays the error message
 
 ### Further Details
 
