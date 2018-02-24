@@ -99,7 +99,7 @@ $auth = array(
 
 ### Error Handling
 
-In case of an error, it depends on the variable `$debug`[6](#d-6) :
+In case of an error, it depends on the variable `$debug`<sup>[6](#d-6)</sup> :
 
 - `$debug === FALSE` : HTML response 500
 - `$debug === TRUE` : sprays the error message
