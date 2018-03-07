@@ -1,6 +1,6 @@
 # Web Fonts
 
-This directory includes some asthetic Korean fonts that are allowed for commercial use. Use the rawgit urls if you wish; however, it is not guaranteed that the files will not be changed or removed.
+This folder includes some asthetic Korean fonts that are allowed for commercial use. Use the rawgit urls if you wish; however, it is not guaranteed that the files will not be changed or removed.
 
 ## RawGit
 
