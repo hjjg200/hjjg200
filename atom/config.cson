@@ -1,0 +1,31 @@
+"*":
+  "autocomplete-plus": {}
+  autosave: {}
+  core:
+    disabledPackages: [
+      "wrap-guide"
+      "github"
+      "background-tips"
+      "status-bar"
+      "about"
+    ]
+    restorePreviousWindowsOnStart: "no"
+    telemetryConsent: "no"
+    themes: [
+      "one-light-ui"
+      "github-atom-light-syntax"
+    ]
+    titleBar: "custom"
+  editor:
+    fontSize: 15
+    invisibles:
+      cr: " "
+      eol: " "
+    scrollPastEnd: true
+    showInvisibles: true
+    tabLength: 4
+  "exception-reporting":
+    userId: "73c4730a-d131-4961-90fa-a7610b95b07e"
+  "no-title-bar": {}
+  welcome:
+    showOnStartup: false
