@@ -1,0 +1,88 @@
+/*
+ * Your Stylesheet
+ *
+ * This stylesheet is loaded when Atom starts up and is reloaded automatically
+ * when it is changed and saved.
+ *
+ * Add your own CSS or Less to fully customize Atom.
+ * If you are unfamiliar with Less, you can read more about it here:
+ * http://lesscss.org
+ */
+
+
+/*
+ * Examples
+ * (To see them, uncomment and save)
+ */
+
+html, atom-workspace {
+    background-color: white !important;
+}
+
+atom-panel-container {
+    &.left {
+        background-color: white !important;
+        margin-top: 0 !important;
+        padding-top: 20px !important;
+    }
+    atom-pane {
+        padding: 0;
+        .tree-view {
+            background-color: white;
+            .selected:before {
+                background: #f8f8f8;
+            }
+        }
+        .item-views > * {
+            top: 0;
+            bottom: 0;
+        }
+    }
+    .tab-bar {
+        display: none !important;
+    }
+}
+
+.tab-bar {
+    background: white;
+    height: 1.8em;
+    .tab {
+        background: white;
+        line-height: 1.8em;
+        .close-icon {
+            top: 0.4em;
+            right: 0.4em;
+            width: 1em;
+            height: 1em;
+            line-height: 1;
+            &::before {
+                vertical-align: 0.25em !important;
+            }
+        }
+    }
+}
+
+atom-pane-axis > atom-pane.active .tab.active:before, atom-pane-container > atom-pane.pane .tab.active:before {
+    display: none !important;
+}
+
+atom-text-editor {
+    font-family: 'IBM Plex Mono', monospace;
+    // To style other content in the text editor's shadow DOM, use the ::shadow expression
+    &::shadow .cursor {
+        border-color: hsl( 15, 100%, 55% );
+    }
+    & > div > .scroll-view {
+        box-sizing: content-box;
+        padding-right: 10px;
+    }
+    .line-number {
+        opacity: 0.15;
+        /* transform: scale(0.7); */
+        &.wrap {
+            opacity: 0;
+        }
+    }
+}
+
+// style the background color of the tree view
