@@ -18,7 +18,7 @@
 
 # Keymap
 
-```yaml
+```cson
 '.platform-darwin':
   'cmd-b': 'tree-view:toggle'
 '.platform-darwin atom-text-editor':
