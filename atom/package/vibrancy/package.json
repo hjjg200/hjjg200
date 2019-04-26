@@ -1,0 +1,25 @@
+{
+  "name": "vibrancy",
+  "main": "./lib/vibrancy",
+  "version": "0.1.0",
+  "description": "Adds vibrancy to the background",
+  "engines": {
+    "atom": ">=1.19.0 <2.0.0"
+  },
+  "dependencies": {},
+  "configSchema": {
+    "vibrancy": {
+      "title": "Vibrancy",
+      "description": "Requires restart due to electron bug",
+      "type": "string",
+      "default": "light",
+      "enum": [
+        "light",
+        "medium-light",
+        "dark",
+        "ultra-dark"
+      ],
+      "order": 1
+    }
+  }
+}
