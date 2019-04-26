@@ -25,11 +25,11 @@ export default {
     }
 
     if( val ) {
-      document.documentElement.classList.add( 'vibrancy' )
       remote.getCurrentWindow().setVibrancy( val )
+      document.documentElement.classList.add( 'vibrancy' )
     } else {
-      document.documentElement.classList.remove( 'vibrancy' )
       remote.getCurrentWindow().setVibrancy()
+      document.documentElement.classList.remove( 'vibrancy' )
     }
 
   }
