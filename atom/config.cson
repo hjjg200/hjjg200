@@ -8,24 +8,27 @@
       "background-tips"
       "status-bar"
       "about"
+      "no-title-bar"
     ]
     restorePreviousWindowsOnStart: "no"
     telemetryConsent: "no"
     themes: [
-      "one-light-ui"
-      "github-atom-light-syntax"
+      "noir"
+      "one-dark-syntax"
     ]
-    titleBar: "custom"
   editor:
-    fontSize: 15
+    fontSize: 19
     invisibles:
       cr: " "
       eol: " "
+      space: " "
+    lineHeight: 1.33
     scrollPastEnd: true
     showInvisibles: true
     tabLength: 4
-  "exception-reporting":
-    userId: "73c4730a-d131-4961-90fa-a7610b95b07e"
-  "no-title-bar": {}
+  vibrancy:
+    vibrancy: "ultra-dark"
   welcome:
     showOnStartup: false
+  whitespace:
+    ensureSingleTrailingNewline: false
