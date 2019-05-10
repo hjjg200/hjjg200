@@ -1,6 +1,7 @@
 "*":
   "autocomplete-plus": {}
-  autosave: {}
+  autosave:
+    enabled: true
   core:
     disabledPackages: [
       "wrap-guide"
@@ -22,10 +23,12 @@
       cr: " "
       eol: " "
       space: " "
-    lineHeight: 1.33
+    lineHeight: 1.3
     scrollPastEnd: true
     showInvisibles: true
     tabLength: 4
+  "exception-reporting":
+    userId: "1a5642b1-b6eb-4e37-831f-2bddc984a7ae"
   vibrancy:
     vibrancy: "ultra-dark"
   welcome:
