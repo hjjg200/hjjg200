@@ -11,6 +11,12 @@
 * 5G : Move to line 5
 * G : Move to the last line
 
+# Explore
+
+* :Sex : Split and open the folder of the selected file
+* :Vex : Vertical version of Sex
+* :ter : Open a terminal
+
 # Split
 
 * :split <path> : Split the window and open the path
