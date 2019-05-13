@@ -19,3 +19,7 @@ set listchars=trail:~ " Show trailing spaces as ~
 " Toggle line numbers with Ctrl-B
 set number!
 noremap <C-B> :set number!<CR>
+
+" CTRL-K and CTRL-L for resizing
+noremap <C-K> :res +1<CR>
+noremap <C-L> :res -1<CR>
