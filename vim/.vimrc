@@ -7,11 +7,6 @@ set expandtab " spaces for indent
 
 set showcmd " shows the latest command at bottom right
 
-" 256 Colors
-set t_Co=256
-set background=dark
-colorscheme grubox
-
 " No highlight for cursorline
 " Highlight the number of the current line
 set cursorline " highlight current line

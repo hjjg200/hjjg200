@@ -12,13 +12,15 @@ if [ "$TERM" = 'xterm-256color' ]; then
     fi
     curl -s https://raw.githubusercontent.com/hjjg200/gruvbox/master/colors/gruvbox.vim > ~/.vim/colors/gruvbox.vim
 
-    vimrcTail='
+    vimrcHead='
 " Set scheme and 256 colors
 set t_Co=256
 set background=dark
-colorscheme gruvbox'
+colorscheme gruvbox
 
-    vimrc="$vimrc$vimrcTail"
+'
+
+    vimrc="$vimrcHead$vimrc"
     echo "$vimrc" > ~/.vimrc
 
 fi
