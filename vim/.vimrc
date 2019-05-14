@@ -48,3 +48,7 @@ noremap <C-L> :res -1<CR>
 "noremap <silent> . /\<<C-r><C-w>\><CR>N
     " * does search of the current word
 noremap <silent> . *N
+
+" Set very magic for every search in normal and visual mode
+nnoremap / /\v
+vnoremap / /\v
