@@ -7,12 +7,17 @@ set expandtab " spaces for indent
 
 set showcmd " shows the latest command at bottom right
 
+" 256 Colors
+set t_Co=256
+set background=dark
+colorscheme grubox
+
 " No highlight for cursorline
 " Highlight the number of the current line
 set cursorline " highlight current line
 hi LineNr term=NONE cterm=NONE ctermfg=DarkGray
-hi cursorLineNr term=NONE cterm=NONE ctermfg=White ctermbg=Yellow
-hi cursorline term=NONE cterm=NONE
+hi cursorLineNr term=NONE cterm=NONE ctermfg=White ctermbg=166
+hi cursorline term=NONE cterm=NONE ctermbg=237
 set showmatch " hightlight matching [{(
 
 set incsearch " search as you type
