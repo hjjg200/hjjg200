@@ -12,7 +12,7 @@ set showcmd " shows the latest command at bottom right
 set cursorline " highlight current line
 hi LineNr term=NONE cterm=NONE ctermfg=DarkGray
 hi cursorLineNr term=NONE cterm=NONE ctermfg=White ctermbg=166
-hi cursorline term=NONE cterm=NONE ctermbg=237
+hi cursorline term=NONE cterm=NONE ctermbg=236
 set showmatch " hightlight matching [{(
 
 set incsearch " search as you type
