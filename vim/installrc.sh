@@ -4,10 +4,10 @@ vimrc=$(cat ~/.vimrc)
 
 if [ "$TERM" = 'xterm-256color' ]; then
 
-    if [ ! -d "~/.vim" ]; then
+    if [ ! -d "$HOME/.vim" ]; then
         mkdir ~/.vim
     fi
-    if [ ! -d "~/.vim/colors" ]; then
+    if [ ! -d "$HOME/.vim/colors" ]; then
         mkdir ~/.vim/colors
     fi
     curl -s https://raw.githubusercontent.com/hjjg200/gruvbox/master/colors/gruvbox.vim > ~/.vim/colors/gruvbox.vim
