@@ -2,24 +2,38 @@ syntax enable " syntax highlighting
 
 set tabstop=4 " tab size
 set softtabstop=4 " space size
+set shiftwidth=4 " indent width
 set expandtab " spaces for indent
 
 set showcmd " shows the latest command at bottom right
 
+" No highlight for cursorline
+" Highlight the number of the current line
 set cursorline " highlight current line
+hi LineNr term=NONE cterm=NONE ctermfg=DarkGray
+hi cursorLineNr term=NONE cterm=NONE ctermfg=White ctermbg=Yellow
+hi cursorline term=NONE cterm=NONE
 set showmatch " hightlight matching [{(
 
 set incsearch " search as you type
 set hlsearch  " highlight matches
 
 set list
-set listchars=tab:>- " Show tab chars as >---
-set listchars=trail:~ " Show trailing spaces as ~
+" Show tab as >--- and trailing spaces as ~
+set listchars=tab:>-,trail:~
+    " Set the color of listchars
+hi SpecialKey term=NONE cterm=NONE ctermfg=DarkGray
 
-" Toggle line numbers with Ctrl-B
+" Toggle number
 set number!
-noremap <C-B> :set number!<CR>
 
-" CTRL-K and CTRL-L for resizing
+" Key mappings
+    " Toggle line number
+noremap <C-B>b :set number!<CR>
+    " Syntax shorthand
+noremap <C-B>n :set syntax=
+    " Tab size shortand
+noremap <C-B>m :set softtabstop=
+    " Resizing
 noremap <C-K> :res +1<CR>
 noremap <C-L> :res -1<CR>
