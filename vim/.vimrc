@@ -27,6 +27,9 @@ hi SpecialKey term=NONE cterm=NONE ctermfg=DarkGray
 " Toggle number
 set number!
 
+" Enable line wrapping
+set wrap " nowrap is no wrapping
+
 " Key mappings
     " Toggle line number
 noremap <C-B>b :set number!<CR>
@@ -37,3 +40,11 @@ noremap <C-B>m :set softtabstop=
     " Resizing
 noremap <C-K> :res +1<CR>
 noremap <C-L> :res -1<CR>
+    " Silently search selected word when pressing period in
+    " normal mode
+    " <C-r><C-w> is substituted with the current word
+    " \<foo\> is block search
+    " N is to return to the current word
+"noremap <silent> . /\<<C-r><C-w>\><CR>N
+    " * does search of the current word
+noremap <silent> . *N
