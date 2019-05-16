@@ -60,13 +60,13 @@ nnoremap / /\v
 vnoremap / /\v
 
 " Copy and paste
-vmap <C-C> "*y
-nmap <C-C> "*y
-vmap <C-X> "*d
-nmap <C-X> "*d
-vmap <C-V> "*P
-nmap <C-V> "*P
-imap <C-V> <C-O>"*P
+vmap <C-C> $regy
+nmap <C-C> $regy
+vmap <C-X> $regd
+nmap <C-X> $regd
+vmap <C-V> $regP
+nmap <C-V> $regP
+imap <C-V> <C-O>$regP
 
 " Select all
 nnoremap <C-A> ggVG
