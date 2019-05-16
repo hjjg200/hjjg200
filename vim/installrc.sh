@@ -8,7 +8,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 else
     reg='"*' # Clipboard
 fi
-vimrc=$(eval echo "$(echo $vimrc)")
+vimrc=$(eval echo "$(echo $vimrc | sed 's/\"/\\\"/g')")
 
 # If 256 color supported
 if [ "$TERM" = 'xterm-256color' ]; then
