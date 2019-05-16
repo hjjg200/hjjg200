@@ -1,6 +1,5 @@
 
 curl -s https://raw.githubusercontent.com/hjjg200/hjjg200/master/vim/.vimrc?t=$(date +%s) > ~/.vimrc
-vimrc=$(cat ~/.vimrc)
 
 # Substitue Register in .vimrc
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
@@ -8,7 +7,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 else
     reg='"*' # Clipboard
 fi
-vimrc=$(echo $vimrc | sed "s/\$reg/$reg/g")
+vimrc=$(sed "s/\$reg/$reg/g" ~/.vimrc)
 
 # If 256 color supported
 if [ "$TERM" = 'xterm-256color' ]; then
