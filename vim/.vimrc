@@ -32,11 +32,17 @@ set wrap " nowrap is no wrapping
 
 " Key mappings
     " Toggle line number
-noremap <C-B>b :set number!<CR>
+vnoremap <C-B>b :set number!<CR>
+nnoremap <C-B>b :set number!<CR>
+inoremap <C-B>b <C-O>:set number!<CR>
     " Syntax shorthand
-noremap <C-B>n :set syntax=
+vnoremap <C-B>n :set syntax=
+nnoremap <C-B>n :set syntax=
+inoremap <C-B>n <C-O>:set syntax=
     " Tab size shortand
-noremap <C-B>m :set softtabstop=
+vnoremap <C-B>m :set softtabstop=
+nnoremap <C-B>m :set softtabstop=
+inoremap <C-B>m <C-O>:set softtabstop=
     " Resizing
 noremap <C-K> :res +1<CR>
 noremap <C-L> :res -1<CR>
@@ -52,3 +58,31 @@ noremap <silent> . *N
 " Set very magic for every search in normal and visual mode
 nnoremap / /\v
 vnoremap / /\v
+
+" Copy and paste
+vmap <C-C> "*y
+nmap <C-C> "*y
+vmap <C-X> "*d
+nmap <C-X> "*d
+vmap <C-V> "*P
+nmap <C-V> "*P
+imap <C-V> <C-O>"*P
+
+" Select all
+nnoremap <C-A> ggVG
+inoremap <C-A> <ESC>ggVG
+vnoremap <C-A> ggVG
+
+" shift+arrow selection if shift+arrow is detected by the terminal
+nmap <S-Up> v<Up>
+nmap <S-Down> v<Down>
+nmap <S-Left> v<Left>
+nmap <S-Right> v<Right>
+vmap <S-Up> <Up>
+vmap <S-Down> <Down>
+vmap <S-Left> <Left>
+vmap <S-Right> <Right>
+imap <S-Up> <Esc>v<Up>
+imap <S-Down> <Esc>v<Down>
+imap <S-Left> <Esc>v<Left>
+imap <S-Right> <Esc>v<Right>
