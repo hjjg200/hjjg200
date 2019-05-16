@@ -1,5 +1,5 @@
 
-curl -s https://raw.githubusercontent.com/hjjg200/hjjg200/master/vim/.vimrc > ~/.vimrc
+curl -s https://raw.githubusercontent.com/hjjg200/hjjg200/master/vim/.vimrc?t=$(date +%s) > ~/.vimrc
 vimrc=$(cat ~/.vimrc)
 
 if [ "$TERM" = 'xterm-256color' ]; then
@@ -10,7 +10,7 @@ if [ "$TERM" = 'xterm-256color' ]; then
     if [ ! -d "$HOME/.vim/colors" ]; then
         mkdir ~/.vim/colors
     fi
-    curl -s https://raw.githubusercontent.com/hjjg200/gruvbox/master/colors/gruvbox.vim > ~/.vim/colors/gruvbox.vim
+    curl -s https://raw.githubusercontent.com/hjjg200/gruvbox/master/colors/gruvbox.vim?t=$(date +%s) > ~/.vim/colors/gruvbox.vim
 
     vimrcHead='
 " Set scheme and 256 colors
