@@ -1,7 +1,10 @@
+#!/bin/bash
 
 # Check
 if [[ ! "$#" -eq 3 ]]; then
-    echo "Wrong argument count"
+    echo "Usage: cleanup.sh <target_directory> <grep_pattern> <limit>"
+    echo "E.g.: cleanuo.sh /some/folder .tar.gz 3"
+    echo "This will remove all the files that contain .tar.gz in /some/folder excluding the 3 latest ones."
     exit 1
 fi
 

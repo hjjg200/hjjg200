@@ -1,6 +1,11 @@
+#!/bin/bash
+
 # Check
 if [[ ! "$#" -eq 1 ]]; then
-    echo "Wrong argument count"
+    echo "Usage: log.sh <command>"
+    echo "E.g.: log.sh 'rm /some/deleted_file'"
+    echo "This will log the command with timestamp in the log file"
+    echo "The log file is located in \$BACKUPPATH/log directory"
     exit 1
 fi
 
