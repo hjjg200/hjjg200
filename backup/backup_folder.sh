@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ "$#" -eq 1 ]]; then
+if [[ ! "$#" -eq 2 ]]; then
     echo "Usage: backup_folder.sh <path_to_folder> <category_name>"
     echo "E.g.: backup_folder.sh /var/some/folder category1"
     echo "This will compress the folder as .tar.gz and send it to \$BACKUPDEST/category1 in \$BACKUPHOST"
