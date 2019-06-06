@@ -14,7 +14,7 @@ backupName=`date '+%Y%m%d_%H%M%S'`_${2}_backup.tar.gz
 tmpName=/tmp/$backupName
 
 # Compress
-tar czvf $tmpName $targetDir
+tar czf $tmpName $targetDir
 
 # Hash
 md5hash=$(md5sum $tmpName)
