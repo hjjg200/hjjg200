@@ -37,7 +37,7 @@ filename=$1
 destDir=$2
 
 # Checksum
-csstr=`$csapp $filename`
+$csapp $filename > $filename$csext
 cmd="scp -p $filename$csext $BACKUPHOST:$destDir"
 $BACKUPPATH/bin/exec.sh "$cmd"
 
