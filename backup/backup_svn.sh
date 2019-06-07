@@ -1,6 +1,17 @@
 #!/bin/bash
 
 # Check
+
+{ # Load config
+    [[ ! "$BACKUPCONFIG" -eq "" ]] &&
+    . "$BACKUPCONFIG"
+} || . ~/.backup-config
+
+$BACKUPPATH/sanity.sh || {
+    echo "Backup is not properly configured"
+    exit 1
+}
+
 if [[ ! "$#" -eq 2 ]]; then
     echo "Usage: backup_svn.sh <repo_path> <category_name>"
     echo "E.g.: backup_svn.sh /var/lib/svn svn1"

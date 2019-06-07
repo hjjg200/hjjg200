@@ -1,6 +1,17 @@
 #!/bin/bash
 
 # Check
+
+{ # Load config
+    [[ ! "$BACKUPCONFIG" -eq "" ]] &&
+    . "$BACKUPCONFIG"
+} || . ~/.backup-config
+
+$BACKUPPATH/sanity.sh || {
+    echo "Backup is not properly configured"
+    exit 1
+}
+
 if [[ ! "$#" -eq 3 ]]; then
     echo "Usage: cleanup.sh <target_directory> <grep_pattern> <limit>"
     echo "E.g.: cleanuo.sh /some/folder .tar.gz 3"
@@ -19,10 +30,8 @@ targets=$(echo "$targets" | awk '{print $2}' | grep $grepPattern)
 lineCount=$(echo "$targets" | wc -l)
 
 delete () {
-    p=$1
     cmd="rm $1"
-    $BACKUPPATH/bin/log.sh "$cmd"
-    $cmd
+    $BACKUPPATH/bin/exec.sh "$cmd"
 }
 
 # Check

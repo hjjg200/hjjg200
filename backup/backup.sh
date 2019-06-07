@@ -1,16 +1,17 @@
 #!/bin/bash
 
-# Functions
-elementBelongs () {
-    local e=$1
-    shift
-    for i; do
-        [[ "$i" -eq "$e" ]] && return 0
-    done
-    return 1
+# Check
+
+{ # Load config
+    [[ ! "$BACKUPCONFIG" -eq "" ]] &&
+    . "$BACKUPCONFIG"
+} || . ~/.backup-config
+
+$BACKUPPATH/sanity.sh || {
+    echo "Backup is not properly configured"
+    exit 1
 }
 
-# Check
 if [[ ! "$#" -eq 2 ]]; then
     echo "Usage: backup.sh <file_path> <destination_directory>"
     echo "E.g.: backup.sh /some/file.tar.gz /backup/myfiles"
@@ -37,11 +38,9 @@ destDir=$2
 
 # Checksum
 csstr=`$csapp $filename`
-cmd="scp $filename$csext $BACKUPHOST:$destDir"
-$BACKUPPATH/bin/log.sh "$cmd"
-$cmd
+cmd="scp -p $filename$csext $BACKUPHOST:$destDir"
+$BACKUPPATH/bin/exec.sh "$cmd"
 
 # Execute and log
-cmd="scp $filename $BACKUPHOST:$destDir"
-$BACKUPPATH/bin/log.sh "$cmd"
-$cmd
+cmd="scp -p $filename $BACKUPHOST:$destDir"
+$BACKUPPATH/bin/exec.sh "$cmd"

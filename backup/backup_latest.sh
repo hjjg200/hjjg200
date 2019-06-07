@@ -1,6 +1,17 @@
 #1/bin/bash
 
 # Check
+
+{ # Load config
+    [[ ! "$BACKUPCONFIG" -eq "" ]] &&
+    . "$BACKUPCONFIG"
+} || . ~/.backup-config
+
+$BACKUPPATH/sanity.sh || {
+    echo "Backup is not properly configured"
+    exit 1
+}
+
 if [[ ! "$#" -eq 3 ]]; then
     echo "Usage: backup_latest.sh <target_directory> <grep_pattern> <category_name>"
     echo "E.g.: backup_latest.sh /path/to/backup .txt document"
