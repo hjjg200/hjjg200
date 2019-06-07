@@ -8,7 +8,7 @@ echo > $cfg
 # Set backup path
 dir=`dirname $0`
 dir=$dir/..
-dir=`readlink -f $dir`
+dir=`readlink $dir`
 echo "export BACKUPPATH=$dir" >> $cfg
 
 # Set backup host
