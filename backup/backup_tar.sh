@@ -7,7 +7,7 @@
     . "$BACKUPCONFIG"
 } || . ~/.backup-config
 
-$BACKUPPATH/sanity.sh || {
+$BACKUPPATH/bin/sanity.sh || {
     echo "Backup is not properly configured"
     exit 1
 }
