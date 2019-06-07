@@ -6,10 +6,8 @@ cfg=~/.backup-config
 echo > $cfg
 
 # Set backup path
-dir=`dirname $0`
-dir=$dir/..
-dir=`readlink $dir`
-echo "export BACKUPPATH=$dir" >> $cfg
+read -p "Backup path: " v
+echo "export BACKUPPATH=$v" >> $cfg
 
 # Set backup host
 read -p "Backup host (username@hostname): " v
