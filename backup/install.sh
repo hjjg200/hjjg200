@@ -15,6 +15,7 @@ cleanup () { # Cleaning up upon failure
 read -p "Root directory for backup settings: " backuppath
 
 { # Try
+    backuppath=${backuppath/#~/$HOME} && # Replace tildes
     [ ! "$backuppath" == "" ] &&
     mkdir -p $backuppath &&
     backuppath=`realpath $backuppath` &&
