@@ -15,7 +15,7 @@ cleanup () { # Cleaning up upon failure
 # Settings
 read -p "Root directory for backup settings: " backuppath
 { # Try
-    [[ ! "$backuppath" -eq "" ]] &&
+    [ ! "$backuppath" -eq "" ] &&
     mkdir -p $backuppath &&
     # mkdir -p $backuppath/bin && bin will be symlink
     mkdir -p $backuppath/log &&
