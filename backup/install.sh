@@ -1,7 +1,7 @@
 #!/bin/bash
 
 gitrepo="https://github.com/hjjg200/hjjg200"
-bindir="/backup/bin"
+bindir="/backup"
 
 # Cleaning commands
 declare -a cleanupcmds
