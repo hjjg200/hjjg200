@@ -17,10 +17,11 @@ read -p "Root directory for backup settings: " backuppath
 
 { # Try
     [ ! "$backuppath" == "" ] &&
+    backuppath=`realpath $backuppath` &&
     mkdir -p $backuppath &&
-    # mkdir -p $backuppath/bin && bin will be symlink
-    mkdir -p $backuppath/log &&
-    mkdir -p $backuppath/tmp &&
+    # mkdir $backuppath/bin && bin will be symlink
+    mkdir $backuppath/log &&
+    mkdir $backuppath/tmp &&
     cleanupcmds+=("rm -r $backuppath")
 } || { # Catch
     echo "Setting $backuppath as the root backup directory failed"
