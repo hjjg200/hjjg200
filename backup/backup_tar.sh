@@ -2,11 +2,6 @@
 
 # Check
 
-{ # Load config
-    [[ ! "$BACKUPCONFIG" -eq "" ]] &&
-    . "$BACKUPCONFIG"
-} || . ~/.backup-config
-
 $BACKUPPATH/bin/sanity.sh || {
     echo "Backup is not properly configured"
     exit 1

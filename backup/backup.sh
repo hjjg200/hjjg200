@@ -2,11 +2,6 @@
 
 # Check
 
-{ # Load config
-    [[ ! "$BACKUPCONFIG" -eq "" ]] &&
-    . "$BACKUPCONFIG"
-} || . ~/.backup-config
-
 $BACKUPPATH/bin/sanity.sh || {
     echo "Backup is not properly configured"
     exit 1
@@ -20,25 +15,26 @@ if [[ ! "$#" -eq 2 ]]; then
 fi
 
 # Prepare
-bcs=${BACKUP_CHECKSUM,,}
-if [[ "$bcs" -eq "sha1" ]]; then
-    csapp=sha1sum
-    csext=.sha1
-elif [[ "$bcs" -eq "sha256" ]]; then
-    csapp=sha256sum
-    csext=.sha256
-else
-    caspp=md5sum
-    csext=.md5
-fi
+# bcs=${BACKUP_CHECKSUM,,}
+# if [[ "$bcs" -eq "sha1" ]]; then
+#    csapp=sha1sum
+#    csext=.sha1
+#elif [[ "$bcs" -eq "sha256" ]]; then
+#    csapp=sha256sum
+#    csext=.sha256
+#else
+#    caspp=md5sum
+#    csext=.md5
+#fi
+csapp=sha1sum
+csext=.sha1
 
 # Backup
 filename=$1
 destDir=$2
 
 # Checksum
-$csapp $filename > $filename$csext
-cmd="scp -p $filename$csext $BACKUPHOST:$destDir"
+cmd="$csapp $filename | ssh $BACKUPHOST 'cat > $destDir'"
 $BACKUPPATH/bin/exec.sh "$cmd"
 
 # Execute and log
