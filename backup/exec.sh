@@ -17,4 +17,4 @@ logFile=$BACKUPPATH/log/${date}.log
 echo "$timestamp +$cmd" >> "$logFile"
 
 # Execute
-$cmd >> "$logFile" 2>&1
+eval $cmd >> "$logFile" 2>&1

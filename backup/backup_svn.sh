@@ -21,13 +21,11 @@ backupName=${date}.svndump
 destDir=$BACKUPDEST/$2
 
 # Check if path is svn repo
-svnadmin info $repoDir &> /dev/null
-if [[ ! "$?" -eq 0 ]]; then
+svnadmin info $repoDir &> /dev/null || {
     echo "$repoDir is not a svn repository"
     exit 1
-fi
+}
 
 # Dump and copy
 cmd="svnadmin dump $repoDir | ssh $BACKUPHOST 'cat > $destDir/$backupName'"
-$BACKUPPATH/bin/log.sh "$cmd"
-$cmd
+$BACKUPPATH/bin/exec.sh "$cmd"

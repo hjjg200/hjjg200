@@ -21,10 +21,10 @@ backupName=`date '+%Y%m%d_%H%M%S'`_${2}_backup.tar.gz
 tmpName=/tmp/$backupName
 
 # Compress
-tar czvf $tmpName $targetDir
+$BACKUPPATH/bin/exec.sh "tar czvf $tmpName $targetDir"
 
 # Send compressed file
 $BACKUPPATH/bin/backup.sh $tmpName $destDir
 
 # Remove the temp file
-rm $tmpName
+$BACKUPPATH/bin/exec.sh "rm $tmpName"

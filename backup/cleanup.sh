@@ -25,8 +25,7 @@ targets=$(echo "$targets" | awk '{print $2}' | grep $grepPattern)
 lineCount=$(echo "$targets" | wc -l)
 
 delete () {
-    cmd="rm $1"
-    $BACKUPPATH/bin/exec.sh "$cmd"
+    $BACKUPPATH/bin/exec.sh "rm $1"
 }
 
 # Check

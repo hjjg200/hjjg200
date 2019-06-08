@@ -27,5 +27,4 @@ backups=$(echo "$backups" | grep $grepPattern)
 latest=$backupDir/$(echo "$backups" | tail -n 1)
 
 # Move
-echo "Moving the latest backup: $latest"
 $BACKUPPATH/bin/backup.sh $latest $destDir
