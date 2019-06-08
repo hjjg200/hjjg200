@@ -16,8 +16,8 @@ read -p "Root directory for backup settings: " backuppath
 
 { # Try
     [ ! "$backuppath" == "" ] &&
-    backuppath=`realpath $backuppath` &&
     mkdir -p $backuppath &&
+    backuppath=`realpath $backuppath` &&
     # mkdir $backuppath/bin && bin will be symlink
     mkdir $backuppath/log &&
     mkdir $backuppath/tmp &&
