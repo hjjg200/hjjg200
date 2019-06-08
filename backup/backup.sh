@@ -30,13 +30,14 @@ csapp=sha1sum
 csext=.sha1
 
 # Backup
-filename=$1
+filepath=$1
 destDir=$2
 
 # Checksum
-cmd="$csapp $filename | ssh $BACKUPHOST 'cat > $destDir'"
+bn=`basename $filepath`
+cmd="$csapp $filepath | ssh $BACKUPHOST 'cat > $destDir/$bn$csext'"
 $BACKUPPATH/bin/exec.sh "$cmd"
 
 # Execute and log
-cmd="scp -p $filename $BACKUPHOST:$destDir"
+cmd="scp -p $filepath $BACKUPHOST:$destDir"
 $BACKUPPATH/bin/exec.sh "$cmd"
