@@ -69,9 +69,9 @@ read -p "Backup destination folder in the backup host: " backupdest
 
 {
     echo # New line
-    echo "export \$BACKUPPATH=$backuppath"
-    echo "export \$BACKUPHOST=$backuphost"
-    echo "export \$BACKUPDEST=$backupdest"
+    echo "export BACKUPPATH=$backuppath"
+    echo "export BACKUPHOST=$backuphost"
+    echo "export BACKUPDEST=$backupdest"
 } >> ~/.profile
 
 # Complete
