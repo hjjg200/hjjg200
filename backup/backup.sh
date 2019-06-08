@@ -35,7 +35,8 @@ destDir=$2
 
 # Checksum
 bn=`basename $filepath`
-cmd="$csapp $filepath | ssh $BACKUPHOST 'cat > $destDir/$bn$csext'"
+cs=(`$csapp $filepath`)
+cmd="echo $cs | ssh $BACKUPHOST 'cat > $destDir/$bn$csext'"
 $BACKUPPATH/bin/exec.sh "$cmd"
 
 # Execute and log
