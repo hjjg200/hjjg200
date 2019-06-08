@@ -14,8 +14,9 @@ cleanup () { # Cleaning up upon failure
 
 # Settings
 read -p "Root directory for backup settings: " backuppath
+
 { # Try
-    [ ! "$backuppath" -eq "" ] &&
+    [ ! "$backuppath" == "" ] &&
     mkdir -p $backuppath &&
     # mkdir -p $backuppath/bin && bin will be symlink
     mkdir -p $backuppath/log &&
@@ -29,6 +30,7 @@ read -p "Root directory for backup settings: " backuppath
 }
 
 read -p "Backup host (username@hostname): " backuphost
+
 { # Try
     ssh $backuphost 'echo'
 } || { # Catch
@@ -39,6 +41,7 @@ read -p "Backup host (username@hostname): " backuphost
 }
 
 read -p "Backup destination folder in the backup host: " backupdest
+
 { # Try
     ssh $backuphost "[[ -d $backupdest ]] && [[ -O $backupdest ]]"
 } || { # Catch
