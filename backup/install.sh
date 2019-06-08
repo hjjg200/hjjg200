@@ -1,7 +1,6 @@
 #!/bin/bash
 
 gitrepo="https://github.com/hjjg200/hjjg200"
-clonedir=repodir
 bindir="/backup/bin"
 
 # Cleaning commands
@@ -55,9 +54,10 @@ read -p "Backup destination folder in the backup host: " backupdest
 # Clone
 
 { # Try
-    absbindir=`realpath $clonedir$bindir` &&
-    git clone $gitrepo $clonedir &&
-    ln -s $absbindir $backuppath/bin
+    gitclonedir=$backuppath/git
+    git clone $gitrepo $gitclonedir &&
+    absclonedir=`realpath $gitclonedir` &&
+    ln -s $absclonedir$bindir $backuppath/bin
 } || { # Catch
     echo "Could not clone the repo and make symlink to $backuppath/bin"
     cleanup
