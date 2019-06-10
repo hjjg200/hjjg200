@@ -2,7 +2,7 @@
 
 # Vars
 gitrepo="https://github.com/hjjg200/hjjg200"
-bindir="/backup"
+bindir="/backup" # Path to backup bin dir in the repo
 
 # Check interactive mode
 [[ $- == *i* ]] || {
@@ -15,7 +15,7 @@ bindir="/backup"
 declare -a cleanupcmds
 cleanup () { # Cleaning up upon failure
     for i in "${cleanupcmds[@]}"; do
-        $i
+        eval "$i"
     done
 }
 
@@ -41,7 +41,7 @@ read -p "Root directory for backup settings: " backuppath
 read -p "Backup host (username@hostname): " backuphost
 
 { # Try
-    ssh $backuphost 'echo'
+    ssh $backuphost 'echo' 2&>1 > /dev/null
 } || { # Catch
     echo "Failed to connect to the host machine"
     echo "All-time connection must be guaranteed for proper backing up"
@@ -52,6 +52,7 @@ read -p "Backup host (username@hostname): " backuphost
 read -p "Backup destination folder in the backup host: " backupdest
 
 { # Try
+    # Check if it is a directory and the user is the owner
     ssh $backuphost "[[ -d $backupdest ]] && [[ -O $backupdest ]]"
 } || { # Catch
     echo "The $backupdest directory in the backup machine cannot be accessed"
@@ -66,7 +67,7 @@ read -p "Backup destination folder in the backup host: " backupdest
     gitclonedir=$backuppath/git
     git clone $gitrepo $gitclonedir &&
     absclonedir=`realpath $gitclonedir` &&
-    ln -s $absclonedir$bindir $backuppath/bin
+    ln -s $absclonedir$bindir $backuppath/bin # Make symlink to the backup bin dir
 } || { # Catch
     echo "Could not clone the repo and make symlink to $backuppath/bin"
     cleanup
@@ -75,12 +76,24 @@ read -p "Backup destination folder in the backup host: " backupdest
 
 # Environment variables
 
+# Ensure the config folder
+cfg="$HOME/.backup_config"
+[[ -f "$cfg" ]] && {
+    echo "The ~/.backup_config file already exists!"
+    read -p "Would you like to overwrite and continue the installation? (y/N): " yn
+    if [[ ! "$yn" =~ [yY] ]]; then
+        echo "Installation aborted."
+        cleanup
+        exit 1
+    fi
+}
+
+# Write the config file
 {
-    echo # New line
-    echo "export BACKUPPATH=$backuppath"
-    echo "export BACKUPHOST=$backuphost"
-    echo "export BACKUPDEST=$backupdest"
-} >> ~/.profile
+    echo "BACKUPPATH=$backuppath"
+    echo "BACKUPHOST=$backuphost"
+    echo "BACKUPDEST=$backupdest"
+} > "$cfg"
 
 # Complete
 echo "Installation complete!"
