@@ -7,7 +7,7 @@ bindir="/backup"
 # Check interactive mode
 [[ $- == *i* ]] || {
     echo "This script must be run in the interactive mode"
-    echo "Run this script like bash <(curl -s <url_to_script>)"
+    echo "Run this script like bash -i <(curl -s <url_to_script>)"
     exit 1
 }
 
