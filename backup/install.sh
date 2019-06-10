@@ -1,7 +1,15 @@
 #!/bin/bash
 
+# Vars
 gitrepo="https://github.com/hjjg200/hjjg200"
 bindir="/backup"
+
+# Check interactive mode
+[[ $- == *i* ]] || {
+    echo "This script must be run in the interactive mode"
+    echo "Run this script like bash <(curl -s <url_to_script>)"
+    exit 1
+}
 
 # Cleaning commands
 declare -a cleanupcmds
