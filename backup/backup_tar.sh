@@ -2,7 +2,10 @@
 
 # Check
 
-$BACKUPPATH/bin/sanity.sh || {
+{ # Load config and sanity check
+    . ~/.backup_config &&
+    $BACKUPPATH/bin/sanity.sh
+} || {
     echo "Backup is not properly configured"
     exit 1
 }
@@ -18,7 +21,7 @@ fi
 targetDir=$1
 destDir=$BACKUPDEST/$2
 backupName=`date '+%Y%m%d_%H%M%S'`_${2}_backup.tar.gz
-tmpName=/tmp/$backupName
+tmpName=$BACKUPPATH/tmp/$backupName
 
 # Compress
 $BACKUPPATH/bin/exec.sh "tar czvf $tmpName $targetDir"
