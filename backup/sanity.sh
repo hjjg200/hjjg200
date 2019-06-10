@@ -5,6 +5,7 @@
 [[ ! -d "$BACKUPPATH" ]] && exit 1
 [[ ! -d "$BACKUPPATH/bin" ]] && exit 1
 [[ ! -d "$BACKUPPATH/log" ]] && exit 1
+[[ ! -d "$BACKUPPATH/tmp" ]] && exit 1
 
 [[ "$BACKUPPATH" == "" ]] && exit 1
 [[ "$BACKUPHOST" == "" ]] && exit 1
