@@ -93,7 +93,11 @@ cfg="$HOME/.backup_config"
     echo "BACKUPPATH=$backuppath"
     echo "BACKUPHOST=$backuphost"
     echo "BACKUPDEST=$backupdest"
-} > "$cfg"
+} > "$cfg" || {
+    echo "Failed to write to $cfg"
+    cleanup
+    exit 1
+}
 
 # Complete
 echo "Installation complete!"
