@@ -2,7 +2,10 @@
 
 # Check
 
-$BACKUPPATH/bin/sanity.sh || {
+{ # Load config and sanity check
+    . ~/.backup_config &&
+    $BACKUPPATH/bin/sanity.sh
+} || {
     echo "Backup is not properly configured"
     exit 1
 }
