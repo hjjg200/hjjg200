@@ -4,16 +4,16 @@
 
 { # Load config and sanity check
     . ~/.backup_config &&
-    $BACKUPPATH/bin/sanity.sh
+    $BACKUP_PATH/bin/sanity.sh
 } || {
     echo "Backup is not properly configured"
     exit 1
 }
 
 if [[ ! "$#" -eq 2 ]]; then
-    echo "Usage: backup.sh <file_path> <destination_directory>"
-    echo "E.g.: backup.sh /some/file.tar.gz /backup/myfiles"
-    echo "This will copy the some.tar.gz to /backup/myfiles directory in the \$BACKUPHOST"
+    echo "Usage: backup.sh <file_path> <category_name>"
+    echo "E.g.: backup.sh /some/file.tar.gz myfiles"
+    echo "This will copy the some.tar.gz to \$BACKUP_DEST/files directory in the \$BACKUP_HOST or the \$BACKUP_S3_BUCKET"
     exit 1
 fi
 
@@ -34,14 +34,31 @@ csext=.sha1
 
 # Backup
 filepath=$1
-destDir=$2
+destDir=$BACKUP_DEST/$2
 
 # Checksum
 bn=`basename $filepath`
-cs=(`$csapp $filepath`)
-cmd="echo $cs | ssh $BACKUPHOST 'cat > $destDir/$bn$csext'"
-$BACKUPPATH/bin/exec.sh "$cmd"
+cs=`$csapp $filepath`
 
-# Execute and log
-cmd="scp -p $filepath $BACKUPHOST:$destDir"
-$BACKUPPATH/bin/exec.sh "$cmd"
+# Backup
+case $BACKUP_TYPE in
+s3)
+    # Copy checksum
+    cmd="echo $cs | aws s3 cp - s3://$BACKUP_S3_BUCKET/$destDir/$bn$csext"
+    $BACKUP_PATH/bin/exec.sh "$cmd"
+
+    # Copy file
+    cmd="aws s3 cp $filepath s3://$BACKUP_S3_BUCKET/$destDir/$bn"
+    $BACKUP_PATH/bin/exec.sh "$cmd"
+    ;;
+disk)
+    # Copy checksum
+    cmd="echo $cs | ssh $BACKUP_HOST 'cat > $destDir/$bn$csext'"
+    $BACKUP_PATH/bin/exec.sh "$cmd"
+
+    # Copy file
+    cmd="scp -p $filepath $BACKUP_HOST:$destDir"
+    $BACKUP_PATH/bin/exec.sh "$cmd"
+    ;;
+esac
+

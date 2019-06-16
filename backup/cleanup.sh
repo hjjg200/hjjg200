@@ -4,7 +4,7 @@
 
 { # Load config and sanity check
     . ~/.backup_config &&
-    $BACKUPPATH/bin/sanity.sh
+    $BACKUP_PATH/bin/sanity.sh
 } || {
     echo "Backup is not properly configured"
     exit 1
@@ -14,6 +14,11 @@ if [[ ! "$#" -eq 3 ]]; then
     echo "Usage: cleanup.sh <target_directory> <grep_pattern> <limit>"
     echo "E.g.: cleanuo.sh /some/folder .tar.gz 3"
     echo "This will remove all the files that contain .tar.gz in /some/folder excluding the 3 latest ones."
+    exit 1
+fi
+
+if [[ $BACKUP_TYPE == s3 ]]; then
+    echo "This script is not yet supported for s3 destination"
     exit 1
 fi
 
@@ -28,7 +33,7 @@ targets=$(echo "$targets" | awk '{print $2}' | grep $grepPattern)
 lineCount=$(echo "$targets" | wc -l)
 
 delete () {
-    $BACKUPPATH/bin/exec.sh "rm $1"
+    $BACKUP_PATH/bin/exec.sh "rm $1"
 }
 
 # Check

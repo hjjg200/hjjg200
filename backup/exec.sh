@@ -4,7 +4,7 @@
 
 { # Load config and sanity check
     . ~/.backup_config &&
-    $BACKUPPATH/bin/sanity.sh
+    $BACKUP_PATH/bin/sanity.sh
 } || {
     echo "Backup is not properly configured"
     exit 1
@@ -14,7 +14,7 @@
 cmd="$1"
 date=`date '+%Y%m'`
 timestamp=`date '+%H:%M:%S'`
-logFile=$BACKUPPATH/log/${date}.log
+logFile=$BACKUP_PATH/log/${date}.log
 
 # Log
 echo "$timestamp +$cmd" >> "$logFile"
