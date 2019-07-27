@@ -1,6 +1,7 @@
 'use babel';
 
 const { remote } = require( 'electron' )
+const bw = remote.getCurrentWindow()
 
 function supported() {
   return process.platform == "darwin" &&
@@ -25,10 +26,10 @@ export default {
     }
 
     if( val ) {
-      remote.getCurrentWindow().setVibrancy( val )
+      bw.setVibrancy( val )
       document.documentElement.classList.add( 'vibrancy' )
     } else {
-      remote.getCurrentWindow().setVibrancy()
+      bw.setVibrancy()
       document.documentElement.classList.remove( 'vibrancy' )
     }
 

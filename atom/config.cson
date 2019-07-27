@@ -17,8 +17,8 @@
       "noir"
       "one-dark-syntax"
     ]
+    titleBar: "custom"
   editor:
-    fontSize: 19
     invisibles:
       cr: " "
       eol: " "
@@ -29,6 +29,8 @@
     tabLength: 4
   "exception-reporting":
     userId: "1a5642b1-b6eb-4e37-831f-2bddc984a7ae"
+  "one-vibrancy":
+    effect: "ultra-dark"
   vibrancy:
     vibrancy: "ultra-dark"
   welcome:
