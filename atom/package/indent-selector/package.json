@@ -1,0 +1,35 @@
+{
+  "name": "indent-selector",
+  "main": "./lib/main",
+  "version": "0.1.0",
+  "description": "Predefined indents",
+  "engines": {
+    "atom": ">=1.19.0 <2.0.0"
+  },
+  "dependencies": {
+    "atom-select-list": "^0.7.0"
+  },
+  "consumedServices": {
+    "status-bar": {
+      "versions": {
+        "^1.0.0": "consumeStatusBar"
+      }
+    }
+  },
+  "configSchema": {
+    "indents": {
+      "title": "Predefined Indents",
+      "description": "Each item must match the regexp, [0-9]+[hs] (h for hard, s for soft)",
+      "type": "array",
+      "default": [
+        "2s",
+        "4s",
+        "4h"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "order": 1
+    }
+  }
+}

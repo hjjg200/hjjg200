@@ -1,6 +1,8 @@
+{remote} = require 'electron'
+bw = remote.getCurrentWindow()
 root = document.documentElement
 themeName = 'one-dark-ui'
-
+vibrancy = 'ultra-dark'
 
 module.exports =
   activate: (state) ->
@@ -18,6 +20,8 @@ module.exports =
 
     atom.config.observe "#{themeName}.stickyHeaders", (value) ->
       setStickyHeaders(value)
+
+    bw.setVibrancy(vibrancy)
 
     # DEPRECATED: This can be removed at some point (added in Atom 1.17/1.18ish)
     # It removes `layoutMode`
