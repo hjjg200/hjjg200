@@ -17,6 +17,13 @@
     }
   },
   "configSchema": {
+    "auto-detect": {
+      "title": "Auto Detect",
+      "description": "Detects the indent of the current file and sets the indent as it is. This may override the atom configuration.",
+      "type": "boolean",
+      "default": true,
+      "order": 2
+    },
     "indents": {
       "title": "Predefined Indents",
       "description": "Each item must match the regexp, [0-9]+[hs] (h for hard, s for soft)",
@@ -24,7 +31,7 @@
       "default": [
         "2s",
         "4s",
-        "4h"
+        "4t"
       ],
       "items": {
         "type": "string"

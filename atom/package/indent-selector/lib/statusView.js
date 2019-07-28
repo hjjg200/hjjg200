@@ -1,4 +1,5 @@
 const { Disposable } = require( "atom" )
+const Indent = require( "./indent" )
 
 module.exports =
 class StatusView {
@@ -125,13 +126,14 @@ class StatusView {
 
                 const sz = editor.getTabLength()
                 const sf = editor.getSoftTabs()
-                const indentName = sz + ( sf ? "s" : "h" )
+                const indent = new Indent( sz, sf )
+                const indentName = indent.shortAlias()
 
                 this.indentLink.textContent = indentName
                 this.indentLink.dataset.indent = indentName
                 this.element.style.display = ''
 
-                let indentAlias = sz + ", " + ( sf ? "Soft" : "Hard" )
+                let indentAlias = indent.alias()
 
                 this.tooltip = atom.tooltips.add(
                     this.element,

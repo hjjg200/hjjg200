@@ -1,4 +1,5 @@
 const SelectList = require( "atom-select-list" )
+const Indent = require( "./indent" )
 
 module.exports =
 class Selector {
@@ -9,20 +10,20 @@ class Selector {
             filterKeyForItem: ( it ) => it,
             elementForItem: ( it ) => {
                 const el = document.createElement( 'li' )
-                const id = this.indentFromString( it )
+                const id = Indent.parse( it )
                 if( id.size == this.currentIndent.size
                     && id.soft == this.currentIndent.soft ) {
                     el.classList.add( 'active' )
                 }
 
-                const indentName = this.aliasOf( id )
+                const indentName = id.alias()
                 el.textContent = indentName
                 el.dataset.indent = indentName
                 return el
             },
             didConfirmSelection: ( it ) => {
                 this.cancel()
-                const indent = this.indentFromString( it )
+                const indent = Indent.parse( it )
                 const editor = atom.workspace.getActiveTextEditor()
                 if( editor ) {
                     editor.setTabLength( indent.size )
@@ -77,29 +78,6 @@ class Selector {
             await this.view.update( { items: indents } )
             this.attach()
         }
-    }
-
-    indentFromString( str ) {
-        let nameExp = /([0-9]+)([sh])/
-        let match = str.match( nameExp )
-
-        if( isNaN( match[1] ) || match[1] <= 0 )
-            return null
-
-        if( !match[2] )
-            return null
-
-        return {
-            size: match[1],
-            soft: match[2] === 's'
-        }
-    }
-
-    aliasOf( id ) {
-        if( id != null ) {
-            return id.size + ", " + ( id.soft ? "Soft" : "Hard" )
-        }
-        return ""
     }
 
 }
