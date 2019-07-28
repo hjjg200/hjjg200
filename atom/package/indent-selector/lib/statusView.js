@@ -1,5 +1,6 @@
 const { Disposable } = require( "atom" )
 const Indent = require( "./indent" )
+const Helper = require( "./helper" )
 
 module.exports =
 class StatusView {
@@ -39,14 +40,6 @@ class StatusView {
             this.activeItemSubscription.dispose()
         }
 
-        if( this.configSizeSubscription ) {
-          this.configSizeSubscription.dispose()
-        }
-
-        if( this.configSoftSubscription ) {
-          this.configSoftSubscription.dispose()
-        }
-
         if( this.clickSubscription ) {
           this.clickSubscription.dispose()
         }
@@ -67,51 +60,49 @@ class StatusView {
         }
 
         if( editor ) {
-
-            editor.displayLayer.tabLengthVal = editor.displayLayer.tabLength
-            editor.softTabsVal = editor.softTabs
-
-            Object.defineProperty(
-                editor.displayLayer, 'tabLength',
-                { set: ( val ) => {
-                    editor.displayLayer.tabLengthVal = val
-                    this.updateStatus()
-                },
-                get: () => editor.displayLayer.tabLengthVal }
-            )
-            this.configSizeSubscription = {
-                dispose: () => {
-                    Object.defineProperty(
-                        editor.displayLayer, 'tabLength',
-                        { set: undefined, get: undefined }
-                    )
-                    editor.displayLayer.tabLength = editor.displayLayer.tabLengthVal
-                    editor.displayLayer.tabLengthVal = undefined
-                }
-            }
-
-            Object.defineProperty(
-                editor, 'softTabs',
-                { set: ( val ) => {
-                    editor.softTabsVal = val
-                    this.updateStatus()
-                },
-                get: () => editor.softTabsVal }
-            )
-            this.configSoftSubscription = {
-                dispose: () => {
-                    Object.defineProperty(
-                        editor, 'softTabs',
-                        { set: undefined, get: undefined }
-                    )
-                    editor.softTabs = editor.softTabsVal
-                    editor.softTabsVal = undefined
-                }
-            }
-
+            this.processEditor( editor )
+            let disposable
+            disposable = editor.displayLayer.onDidReset( () => {
+                this.processEditor( editor )
+                disposable.dispose()
+            } )
         }
 
         this.updateStatus()
+    }
+
+    processEditor( editor ) {
+        editor.displayLayer.tabLengthVal = editor.displayLayer.tabLength
+        editor.softTabsVal = editor.softTabs
+
+        Object.defineProperty(
+            editor.displayLayer, 'tabLength',
+            { set: ( val ) => {
+                editor.displayLayer.tabLengthVal = val
+                this.updateStatus()
+            },
+            get: () => editor.displayLayer.tabLengthVal }
+        )
+
+        Object.defineProperty(
+            editor, 'softTabs',
+            { set: ( val ) => {
+                editor.softTabsVal = val
+                this.updateStatus()
+            },
+            get: () => editor.softTabsVal }
+        )
+
+        if( editor ) {
+            const sz = Helper.getFileTabLength( editor )
+            const soft = editor.usesSoftTabs()
+                || atom.config.get( "editor.softTabs" )
+
+            if( atom.config.get( "indent-selector.auto-detect" ) == true ) {
+                editor.setTabLength( sz )
+                editor.setSoftTabs( soft )
+            }
+        }
     }
 
     updateStatus() {

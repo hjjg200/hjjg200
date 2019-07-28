@@ -1,6 +1,5 @@
 const SelectView = require( "./selectView" )
 const StatusView = require( "./statusView" )
-const Helper = require( "./helper" )
 
 let commandDisposable = null
 let selectView = null
@@ -16,10 +15,6 @@ module.exports = {
                 selectView.toggle()
             }
         )
-
-        // Active editor
-        this.activeItemSubscription = atom.workspace.observeActiveTextEditor( this.subscribeToActiveTextEditor.bind( this ) )
-
     },
     deactivate() {
         if( commandDisposable ) commandDisposable.dispose()
@@ -34,16 +29,5 @@ module.exports = {
     consumeStatusBar( statusBar ) {
         statusView = new StatusView( statusBar )
         statusView.attach()
-    },
-    subscribeToActiveTextEditor( editor ) {
-        if( !editor ) return;
-        const sz = Helper.getFileTabLength( editor )
-        const soft = editor.usesSoftTabs()
-            || atom.config.get( "editor.softTabs" )
-
-        if( atom.config.get( "indent-selector.auto-detect" ) == true ) {
-            editor.setTabLength( sz )
-            editor.setSoftTabs( soft )
-        }
     }
 }

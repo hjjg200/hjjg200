@@ -6,8 +6,6 @@ class Indent {
         let nameExp = /([0-9]+)([st])/
         let match = str.match( nameExp )
 
-        console.log(str)
-
         if( match == null || match.length < 3 )
             return null
 

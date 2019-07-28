@@ -3,6 +3,7 @@ module.exports = {
     getFileTabLength: ( editor ) => {
         const languageMode = editor.buffer.getLanguageMode();
         const hasIsRowCommented = languageMode.isRowCommented;
+        const rgx = /^ +./
 
         let tl = 0;
         if( editor.usesSoftTabs() )
@@ -15,7 +16,7 @@ module.exports = {
                 if( hasIsRowCommented && languageMode.isRowCommented(bufferRow) )
                     continue;
                 const line = editor.buffer.lineForRow( bufferRow );
-                if( line[0] === ' ' ) {
+                if( line[0] === ' ' && rgx.test( line ) ) {
                     for( let i = 0; i < line.length; i++ ) {
                         if( line.charAt( i ) === ' ' ) tl++;
                         else break;
