@@ -21,7 +21,9 @@ module.exports =
     atom.config.observe "#{themeName}.stickyHeaders", (value) ->
       setStickyHeaders(value)
 
-    bw.setVibrancy(vibrancy)
+    if supported()
+      bw.setVibrancy(vibrancy)
+      document.documentElement.classList.add( "vibrancy" )
 
     # DEPRECATED: This can be removed at some point (added in Atom 1.17/1.18ish)
     # It removes `layoutMode`
@@ -88,3 +90,7 @@ setStickyHeaders = (stickyHeaders) ->
 
 unsetStickyHeaders = ->
   root.removeAttribute("theme-#{themeName}-sticky-headers")
+
+
+supported = ->
+  return process.platform == "darwin" && ( process.versions.electron.charAt( 0 ) >= "2" && atom.config.get( 'core.titleBar' ) != "native" )

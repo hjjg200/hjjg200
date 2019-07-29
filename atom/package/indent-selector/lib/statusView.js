@@ -79,6 +79,7 @@ class StatusView {
             editor.displayLayer, 'tabLength',
             { set: ( val ) => {
                 editor.displayLayer.tabLengthVal = val
+                console.log(val, (new Error()).stack)
                 this.updateStatus()
             },
             get: () => editor.displayLayer.tabLengthVal }

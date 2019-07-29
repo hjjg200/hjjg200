@@ -3,6 +3,7 @@
   autosave:
     enabled: true
   core:
+    autoHideMenuBar: true
     disabledPackages: [
       "wrap-guide"
       "github"
