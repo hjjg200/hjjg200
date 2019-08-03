@@ -1,3 +1,4 @@
+
 const { Disposable } = require( "atom" )
 const Indent = require( "./indent" )
 const Helper = require( "./helper" )
@@ -41,69 +42,59 @@ class StatusView {
         }
 
         if( this.clickSubscription ) {
-          this.clickSubscription.dispose()
+            this.clickSubscription.dispose()
         }
 
         if( this.tile ) {
-          this.tile.destroy()
+            this.tile.destroy()
         }
 
         if( this.tooltip ) {
-          this.tooltip.dispose()
+            this.tooltip.dispose()
+        }
+
+        if( this.resetSubscription ) {
+            this.resetSubscription.dispose()
+        }
+
+        if( this.tokenizeSubscription ) {
+            this.tokenizeSubscription.dispose()
         }
     }
 
     subscribeToActiveTextEditor( editor ) {
-        if( this.indentSubscription ) {
-            this.indentSubscription.dispose()
-            this.indentSubscription = null
-        }
 
         if( editor ) {
-            this.processEditor( editor )
-            let disposable
-            disposable = editor.displayLayer.onDidReset( () => {
-                this.processEditor( editor )
-                disposable.dispose()
+            // Reset
+            this.resetSubscription = editor.displayLayer.onDidReset( () => {
+                this.updateStatus()
             } )
+
+            // Tokenized
+            const languageMode = editor.buffer.getLanguageMode()
+            const onDidTokenize = () => {
+                //this.processEditor( editor )
+                const sz = Helper.getFileTabLength( editor )
+                const soft = editor.usesSoftTabs()
+
+                if( atom.config.get( "indent-selector.auto-detect" ) == true ) {
+                    editor.setTabLength( sz )
+                    editor.setSoftTabs( soft )
+                }
+            }
+
+            console.log( languageMode )
+
+            if( languageMode.rootLanguageLayer ) {
+                languageMode.rootLanguageLayer.update( null ).then( onDidTokenize )
+            } else if( languageMode.onDidTokenize ) {
+                this.tokenizeSubscription = languageMode.emitter.on( 'did-tokenize', onDidTokenize )
+            }
+
         }
 
         this.updateStatus()
-    }
 
-    processEditor( editor ) {
-        editor.displayLayer.tabLengthVal = editor.displayLayer.tabLength
-        editor.softTabsVal = editor.softTabs
-
-        Object.defineProperty(
-            editor.displayLayer, 'tabLength',
-            { set: ( val ) => {
-                editor.displayLayer.tabLengthVal = val
-                console.log(val, (new Error()).stack)
-                this.updateStatus()
-            },
-            get: () => editor.displayLayer.tabLengthVal }
-        )
-
-        Object.defineProperty(
-            editor, 'softTabs',
-            { set: ( val ) => {
-                editor.softTabsVal = val
-                this.updateStatus()
-            },
-            get: () => editor.softTabsVal }
-        )
-
-        if( editor ) {
-            const sz = Helper.getFileTabLength( editor )
-            const soft = editor.usesSoftTabs()
-                || atom.config.get( "editor.softTabs" )
-
-            if( atom.config.get( "indent-selector.auto-detect" ) == true ) {
-                editor.setTabLength( sz )
-                editor.setSoftTabs( soft )
-            }
-        }
     }
 
     updateStatus() {
