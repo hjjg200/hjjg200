@@ -75,7 +75,7 @@ class StatusView {
             const onDidTokenize = () => {
                 //this.processEditor( editor )
                 const sz = Helper.getFileTabLength( editor )
-                const soft = editor.usesSoftTabs()
+                const soft = editor.usesSoftTabs() || atom.config.get( "editor.softTabs" )
 
                 if( atom.config.get( "indent-selector.auto-detect" ) == true ) {
                     editor.setTabLength( sz )
