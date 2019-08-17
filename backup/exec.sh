@@ -19,5 +19,8 @@ logFile=$BACKUP_PATH/log/${date}.log
 # Log
 echo "$timestamp +$cmd" >> "$logFile"
 
+# Verbose
+echo "+$cmd"
+
 # Execute
 eval $cmd >> "$logFile" 2>&1

@@ -4,7 +4,7 @@
 
 { # Load config and sanity check
     . ~/.backup_config &&
-    $BACKUPPATH/bin/sanity.sh
+    $BACKUP_PATH/bin/sanity.sh
 } || {
     echo "Backup is not properly configured"
     exit 1
@@ -13,21 +13,21 @@
 if [[ ! "$#" -eq 2 ]]; then
     echo "Usage: backup_tar.sh <path_pattern> <category_name>"
     echo "E.g.: backup_tar.sh /var/some/folder category1"
-    echo "This will compress the folder as .tar.gz and send it to \$BACKUPDEST/category1 in \$BACKUPHOST"
+    echo "This will compress the folder as .tar.gz and send it to \$BACKUP_DEST/category1 in \$BACKUP_HOST"
     exit 1
 fi
 
 # Vars
 targetDir=$1
-destDir=$BACKUPDEST/$2
+destDir=$BACKUP_DEST/$2
 backupName=`date '+%Y%m%d_%H%M%S'`_${2}_backup.tar.gz
-tmpName=$BACKUPPATH/tmp/$backupName
+tmpName=$BACKUP_PATH/tmp/$backupName
 
 # Compress
-$BACKUPPATH/bin/exec.sh "tar czvf $tmpName $targetDir"
+$BACKUP_PATH/bin/exec.sh "tar czvf $tmpName $targetDir"
 
 # Send compressed file
-$BACKUPPATH/bin/backup.sh $tmpName $destDir
+$BACKUP_PATH/bin/backup.sh $tmpName $destDir
 
 # Remove the temp file
-$BACKUPPATH/bin/exec.sh "rm $tmpName"
+$BACKUP_PATH/bin/exec.sh "rm $tmpName"

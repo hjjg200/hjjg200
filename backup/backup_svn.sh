@@ -19,10 +19,10 @@ fi
 
 # Vars
 repoDir=$1
+category=$2
 date=`date '+%Y%m%d-%H%M%S'`
 backupName=${date}_${repoDir//\//-}.svndump # All slashes replaced with hyphen
 filepath="$BACKUP_PATH/tmp/$backupName"
-category=$2
 
 # Check if path is svn repo
 svnadmin info $repoDir &> /dev/null || {
@@ -31,10 +31,10 @@ svnadmin info $repoDir &> /dev/null || {
 }
 
 # Temp
-svnadmin dump $repoDir > "$filepath"
+$BACKUP_PATH/bin/exec.sh "svnadmin dump $repoDir > \"$filepath\""
 
 # Backup
-$BACKUPPATH/bin/backup.sh "$filepath" "$category"
+$BACKUP_PATH/bin/backup.sh "$filepath" "$category"
 
 # Delete
-rm "$filepath"
+$BACKUP_PATH/bin/exec.sh "rm \"$filepath\""
