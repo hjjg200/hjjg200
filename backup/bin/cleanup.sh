@@ -24,7 +24,6 @@ limit=$3
 
 case $BACKUP_TYPE in
 s3)
-    echo "Currently s3 cleanup is at test phase"
     # S3 paths must end with a slash
     # PRE in ls result is for prefixes
     # Print the date and name only and sort by the date

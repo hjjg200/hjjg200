@@ -47,7 +47,7 @@ s3)
     $BACKUP_PATH/bin/exec.sh "printf $cs | aws s3 cp - s3://$BACKUP_S3_BUCKET/$destDir/$bn$csext"
 
     # Copy file
-    $BACKUP_PATH/bin/exec.sh "aws s3 cp $filepath s3://$BACKUP_S3_BUCKET/$destDir/$bn"
+    $BACKUP_PATH/bin/exec.sh "aws s3 cp $filepath s3://$BACKUP_S3_BUCKET/$destDir/$bn --storage-class GLACIER"
     ;;
 scp)
     # Copy checksum

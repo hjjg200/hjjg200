@@ -75,6 +75,8 @@ s3)
     }
 
     read -p "S3 prefix for backups: " backupdest
+    # Remove trailing slash
+    backupdest=`echo $backupdest | sed 's/\/$//'`
     ;;
 scp)
     read -p "Backup host (username@hostname): " backuphost
