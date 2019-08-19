@@ -18,13 +18,13 @@ if [[ ! "$#" -eq 2 ]]; then
 fi
 
 # Vars
-targetDir=$1
+pathPattern=$1
 destDir=$BACKUP_DEST/$2
 backupName=`date '+%Y%m%d_%H%M%S'`_${2}_backup.tar.gz
 tmpName=$BACKUP_PATH/tmp/$backupName
 
 # Compress
-$BACKUP_PATH/bin/exec.sh "tar czvf $tmpName $targetDir"
+$BACKUP_PATH/bin/exec.sh "tar czvf $tmpName $pathPattern"
 
 # Send compressed file
 $BACKUP_PATH/bin/backup.sh $tmpName $destDir

@@ -2,10 +2,13 @@
 
 # Vars
 gitrepo="https://github.com/hjjg200/hjjg200"
-bindir="/backup" # Path to backup bin dir in the repo
+bindir="/backup/bin" # Path to backup bin dir in the repo
 
 # Check interactive mode
-[[ $- == *i* ]] || {
+{
+    [[ $- == *i* ]] && # Interactive shell has i option set
+    [[ ! "$PS1" == "" ]] # Interactive shell has $PS1 set
+} || {
     echo "This script must be run in the interactive mode"
     echo "Run this script like bash -i <(curl -s <url_to_script>)"
     exit 1
@@ -39,8 +42,8 @@ read -p "Root directory for backup settings: " backuppath
     exit 1
 }
 
-while [[ ! $backuptype =~ s3|disk ]]; do {
-    read -p "Backup type (s3, disk): " backuptype
+while [[ ! $backuptype =~ s3|scp ]]; do {
+    read -p "Backup type (s3, scp): " backuptype
 } done
 
 case $backuptype in
@@ -73,7 +76,7 @@ s3)
 
     read -p "S3 prefix for backups: " backupdest
     ;;
-disk)
+scp)
     read -p "Backup host (username@hostname): " backuphost
 
     { # Try
@@ -135,9 +138,9 @@ cfg="$HOME/.backup_config"
     case $backuptype in
     s3)
         echo "export AWS_SHARED_CREDENTIALS_FILE=$awsCredentials"
-        echo "BACKUP_S3_BUCKET_NAME=$s3BucketName"
+        echo "BACKUP_S3_BUCKET=$s3BucketName"
         ;;
-    disk)
+    scp)
 
         ;;
     esac

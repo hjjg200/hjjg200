@@ -24,10 +24,10 @@ category=$3
 
 # Fetch the list of backup files sorted by modified time
 backups=$(find $backupDir -type f -printf "%T@ %f\n" | sort -n | awk '{print $2}')
-backups=$(echo "$backups" | grep $grepPattern)
+backups=$(printf "$backups" | grep "$grepPattern")
 
 # Get the latest backup
-latest=$backupDir/$(echo "$backups" | tail -n 1)
+latest=$backupDir/$(printf "$backups" | tail -n 1)
 
 # Move
-$BACKUPPATH/bin/backup.sh $latest $category
+$BACKUP_PATH/bin/backup.sh "$latest" "$category"

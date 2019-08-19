@@ -34,7 +34,7 @@ csext=.sha1
 
 # Backup
 filepath=$1
-destDir=$BACKUP_DEST/$2
+destDir="$BACKUP_DEST/$2"
 
 # Checksum
 bn=`basename $filepath`
@@ -44,21 +44,17 @@ cs=`$csapp $filepath`
 case $BACKUP_TYPE in
 s3)
     # Copy checksum
-    cmd="echo $cs | aws s3 cp - s3://$BACKUP_S3_BUCKET/$destDir/$bn$csext"
-    $BACKUP_PATH/bin/exec.sh "$cmd"
+    $BACKUP_PATH/bin/exec.sh "printf $cs | aws s3 cp - s3://$BACKUP_S3_BUCKET/$destDir/$bn$csext"
 
     # Copy file
-    cmd="aws s3 cp $filepath s3://$BACKUP_S3_BUCKET/$destDir/$bn"
-    $BACKUP_PATH/bin/exec.sh "$cmd"
+    $BACKUP_PATH/bin/exec.sh "aws s3 cp $filepath s3://$BACKUP_S3_BUCKET/$destDir/$bn"
     ;;
-disk)
+scp)
     # Copy checksum
-    cmd="echo $cs | ssh $BACKUP_HOST 'cat > $destDir/$bn$csext'"
-    $BACKUP_PATH/bin/exec.sh "$cmd"
+    $BACKUP_PATH/bin/exec.sh "printf $cs | ssh $BACKUP_HOST 'cat > $destDir/$bn$csext'"
 
     # Copy file
-    cmd="scp -p $filepath $BACKUP_HOST:$destDir"
-    $BACKUP_PATH/bin/exec.sh "$cmd"
+    $BACKUP_PATH/bin/exec.sh "scp -p $filepath $BACKUP_HOST:$destDir/$bn"
     ;;
 esac
 
