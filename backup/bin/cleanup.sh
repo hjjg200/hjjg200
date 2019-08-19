@@ -49,8 +49,9 @@ esac
 
 # Check
 if (( lineCount > limit )); then
-    deletedCount=$(($lineCount-$limit))
+    deletedCount=$((lineCount - limit))
     deleted=$(printf "$targets" | head -n $deletedCount)
+    echo $deleted
 
     # Delete
     while read l; do
