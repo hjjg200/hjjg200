@@ -19,7 +19,7 @@ fi
 
 # Vars
 pathPattern=$1
-destDir=$BACKUP_DEST/$2
+category=$2
 backupName=`date '+%Y%m%d_%H%M%S'`_${2}_backup.tar.gz
 tmpName=$BACKUP_PATH/tmp/$backupName
 
@@ -27,7 +27,7 @@ tmpName=$BACKUP_PATH/tmp/$backupName
 $BACKUP_PATH/bin/exec.sh "tar czvf $tmpName $pathPattern"
 
 # Send compressed file
-$BACKUP_PATH/bin/backup.sh $tmpName $destDir
+$BACKUP_PATH/bin/backup.sh $tmpName $category
 
 # Remove the temp file
 $BACKUP_PATH/bin/exec.sh "rm $tmpName"
