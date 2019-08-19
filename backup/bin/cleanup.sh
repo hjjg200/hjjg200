@@ -28,7 +28,7 @@ s3)
     # PRE in ls result is for prefixes
     # Print the date and name only and sort by the date
     targets=$(aws s3 ls "s3://$BACKUP_S3_BUCKET/$BACKUP_DEST/$category/" | awk '{ if ( $1 != "PRE" ) { $3=""; print $0; } }' | sort -n)
-    targets=$(printf "$targets" | awk '{$1=$2=""; print $0}' | sed 's/^[ \t]*//')
+    targets=$(printf "$targets" | awk '{$1=$2=""; print $0}' | sed 's/^[ \t]*//' | grep $grepPattern)
     lineCount=$(printf "$targets" | wc -l)
 
     delete () {
