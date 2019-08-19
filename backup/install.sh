@@ -133,7 +133,6 @@ cfg="$HOME/.backup_config"
 {
     echo "BACKUP_PATH=$backuppath"
     echo "BACKUP_TYPE=$backuptype"
-    echo "BACKUP_HOST=$backuphost"
     echo "BACKUP_DEST=$backupdest"
     case $backuptype in
     s3)
@@ -141,7 +140,7 @@ cfg="$HOME/.backup_config"
         echo "BACKUP_S3_BUCKET=$s3BucketName"
         ;;
     scp)
-
+        echo "BACKUP_HOST=$backuphost"
         ;;
     esac
 } > "$cfg" || {

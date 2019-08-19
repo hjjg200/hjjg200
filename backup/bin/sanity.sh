@@ -4,7 +4,6 @@
 
 ## Variables
 [[ "$BACKUP_PATH" == "" ]] && exit 1
-[[ "$BACKUP_HOST" == "" ]] && exit 1
 [[ "$BACKUP_TYPE" == "" ]] && exit 1
 [[ "$BACKUP_DEST" == "" ]] && exit 1
 
@@ -15,7 +14,7 @@ s3)
     [[ "$BACKUP_S3_BUCKET" == "" ]] && exit 1
     ;;
 scp)
-
+    [[ "$BACKUP_HOST" == "" ]] && exit 1
     ;;
 esac
 
