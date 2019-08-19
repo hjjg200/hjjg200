@@ -83,11 +83,6 @@ s3)
         exit 1
     }
 
-    # Try
-    {
-        # Try to create
-
-    }
     ;;
 scp)
     read -p "Backup host (username@hostname): " backuphost
