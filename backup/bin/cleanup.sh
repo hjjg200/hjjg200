@@ -29,8 +29,8 @@ s3)
     # Print the date and name only and sort by the date
     targets=$(aws s3 ls "s3://$BACKUP_S3_BUCKET/$BACKUP_DEST/$category/" | awk '{ if ( $1 != "PRE" ) { $3=""; print $0; } }' | sort -n)
     targets=$(printf "$targets" | awk '{$1=$2=""; print $0}' | sed 's/^[ \t]*//' | grep $grepPattern)
-    lineCount=$(printf "$targets" | wc -l)
-    echo "$targets"
+    # wc -l counts \n
+    lineCount=$(echo "$targets" | wc -l)
 
     delete () {
         $BACKUP_PATH/bin/exec.sh "aws s3 rm s3://$BACKUP_S3_BUCKET/$BACKUP_DEST/$category/$1"
@@ -40,7 +40,8 @@ scp)
     # Delete
     targets=$(ssh $BACKUP_HOST "find \"${BACKUP_DEST}/${category}\" -printf \"%T@ %f\n\"" | sort -n)
     targets=$(printf "$targets" | awk '{print $2}' | grep $grepPattern)
-    lineCount=$(printf "$targets" | wc -l)
+    # wc -l counts \n
+    lineCount=$(echo "$targets" | wc -l)
 
     delete () {
         $BACKUP_PATH/bin/exec.sh "ssh $BACKUP_HOST 'rm $BACKUP_DEST/$category/$1'"
@@ -52,7 +53,7 @@ esac
 if (( lineCount > limit )); then
     deletedCount=$((lineCount - limit))
     deleted=$(printf "$targets" | head -n $deletedCount)
-    
+
     # Delete
     while read l; do
         delete "$l"
