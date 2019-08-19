@@ -139,16 +139,16 @@ cfg="$HOME/.backup_config"
 
 # Write the config file
 {
-    echo "BACKUP_PATH=$backuppath"
-    echo "BACKUP_TYPE=$backuptype"
-    echo "BACKUP_DEST=$backupdest"
+    echo "export BACKUP_PATH=$backuppath"
+    echo "export BACKUP_TYPE=$backuptype"
+    echo "export BACKUP_DEST=$backupdest"
     case $backuptype in
     s3)
         echo "export AWS_SHARED_CREDENTIALS_FILE=$awsCredentials"
-        echo "BACKUP_S3_BUCKET=$s3BucketName"
+        echo "export BACKUP_S3_BUCKET=$s3BucketName"
         ;;
     scp)
-        echo "BACKUP_HOST=$backuphost"
+        echo "export BACKUP_HOST=$backuphost"
         ;;
     esac
 } > "$cfg" || {
