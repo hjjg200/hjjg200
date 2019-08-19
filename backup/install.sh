@@ -64,19 +64,30 @@ s3)
     chmod 400 "$awsCredentials"
     export AWS_SHARED_CREDENTIALS_FILE="$awsCredentials"
 
+    #
+    read -p "S3 prefix for backups: " backupdest
+    # Remove trailing slash
+    backupdest=`echo $backupdest | sed 's/\/$//'`
+
     # Check s3 access
     { # Try
-        aws s3 ls "s3://$s3BucketName" &> /dev/null
+        aws s3 ls "s3://$s3BucketName" &> /dev/null &&
+        awsTestTmpFile=s3://${s3BucketName}/${backupdest}/glacier_test.tmp &&
+        printf 'glacier_test' | aws s3 cp - $awsTestTmpFile &&
+        aws s3 rm $awsTestTmpFile
     } || { # Catch
-        echo "Failed to connect to the s3 bucket"
+        echo "Failed to properly access the s3 bucket"
         echo "Read and write permissions for the bucket are needed"
+        echo "And the awscli must support GLACIER storage class"
         cleanup
         exit 1
     }
 
-    read -p "S3 prefix for backups: " backupdest
-    # Remove trailing slash
-    backupdest=`echo $backupdest | sed 's/\/$//'`
+    # Try
+    {
+        # Try to create
+
+    }
     ;;
 scp)
     read -p "Backup host (username@hostname): " backuphost
