@@ -17,24 +17,14 @@ if [[ ! "$#" -eq 2 ]]; then
     exit 1
 fi
 
-# Prepare
-# bcs=${BACKUP_CHECKSUM,,}
-# if [[ "$bcs" -eq "sha1" ]]; then
-#    csapp=sha1sum
-#    csext=.sha1
-#elif [[ "$bcs" -eq "sha256" ]]; then
-#    csapp=sha256sum
-#    csext=.sha256
-#else
-#    caspp=md5sum
-#    csext=.md5
-#fi
+# Checksum
 csapp=sha1sum
 csext=.sha1
 
 # Backup
 filepath=$1
-destDir="$BACKUP_DEST/$2"
+category=$2
+destDir="$BACKUP_DEST/$category"
 
 # Checksum
 bn=`basename $filepath`
