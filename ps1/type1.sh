@@ -94,7 +94,7 @@ prompt_command () {
     fi
     PS1=$PS1"$CL_BG_MAGENTA $PWD "
     PS1=$PS1"$CL_RESET\n \$"
-    #
+    
 }
 
 export PROMPT_COMMAND=prompt_command
