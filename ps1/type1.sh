@@ -75,26 +75,44 @@ fi
 
 
 prompt_command () {
+    RETURN_CODE=$?
+
     # Get variables
     local FORMATTED_DATE=`date +'%H:%M%z'`
 
-    PS1="$CL_FG_BLACK"
-    PS1=$PS1"$CL_BG_CYAN ${FORMATTED_DATE} "
-    # Git
+    PS1=
+    GIT_BRANCH=
     if [ -d .git ] || git rev-parse --git-dir &> /dev/null; then
-        local GIT_BRANCH=`git rev-parse --abbrev-ref HEAD` &&
-        local UNSTAGED_GIT=`git diff --cached --name-only | wc -l` && #
-        {
-            [[ $UNSTAGED_GIT > 0 ]] &&
-            CL_BG_GIT_BRANCH=$CL_BG_RED$CL_FG_WHITE
-        } || {
-            CL_BG_GIT_BRANCH=$CL_BG_GREEN
-        } &&
-        PS1=$PS1"$CL_BG_GIT_BRANCH ($GIT_BRANCH) $CL_FG_BLACK"
+        GIT_BRANCH=`git rev-parse --abbrev-ref HEAD`
+        GIT_CHANGES=`git diff --cached --name-only``git diff --name-only `
+        [[ `echo "$GIT_CHANGES" | wc -l` -gt 0 ]] &&
+        GIT_UNCOMMITTED=1 || GIT_UNCOMMITTED=0
     fi
-    PS1=$PS1"$CL_BG_MAGENTA $PWD "
-    PS1=$PS1"$CL_RESET\n \$"
+    if [[ "$LAST_PWD" != "$PWD" ]] ||
+        [[ "$LAST_GIT_UNCOMMITTED" != "$GIT_UNCOMMITTED" ]]; then
+        PS1="$CL_FG_BLACK"
+        PS1=$PS1"$CL_BG_CYAN ${FORMATTED_DATE} "
+        # Git
+        if [[ $GIT_BRANCH != "" ]]; then
+            {
+                [[ $GIT_UNCOMMITTED -gt 0 ]] &&
+                CL_BG_GIT_BRANCH=$CL_BG_RED$CL_FG_WHITE
+            } || {
+                CL_BG_GIT_BRANCH=$CL_BG_GREEN
+            } &&
+            PS1=$PS1"$CL_BG_GIT_BRANCH ($GIT_BRANCH) $CL_FG_BLACK"
+        fi
+        PS1=$PS1"$CL_BG_MAGENTA $PWD "
+        PS1=$PS1"$CL_RESET\n"
+    fi
 
+    PS1=$PS1"\$([ \j -gt 0 ] && echo \"(\j) \")"
+    [[ $RETURN_CODE -ne 0 ]] && PS1=$PS1$CL_FG_RED ||
+        PS1=$PS1$CL_FG_GREEN
+    PS1=$PS1"=> $CL_RESET"
+
+    LAST_PWD=$PWD
+    LAST_GIT_UNCOMMITTED=$GIT_UNCOMMITTED
 }
 
 export PROMPT_COMMAND=prompt_command
