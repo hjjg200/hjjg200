@@ -83,7 +83,7 @@ prompt_command () {
     # Git
     if [ -d .git ] || git rev-parse --git-dir &> /dev/null; then
         local GIT_BRANCH=`git rev-parse --abbrev-ref HEAD` &&
-        local UNSTAGED_GIT=`git diff --cached --name-only | wc -l` &&
+        local UNSTAGED_GIT=`git diff --cached --name-only | wc -l` && #
         {
             [[ $UNSTAGED_GIT > 0 ]] &&
             CL_BG_GIT_BRANCH=$CL_BG_RED$CL_FG_WHITE
@@ -94,7 +94,7 @@ prompt_command () {
     fi
     PS1=$PS1"$CL_BG_MAGENTA $PWD "
     PS1=$PS1"$CL_RESET\n \$"
-    
+
 }
 
 export PROMPT_COMMAND=prompt_command
