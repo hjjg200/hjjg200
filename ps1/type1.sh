@@ -1,5 +1,16 @@
 #/bin/bash
 
+# Font
+if [[ "$OSTYPE" == darwin* ]]; then
+    CHAR_USER="→"
+elif [[ "$OSTYPE" == linux-gnu ]]; then
+    if [[ "$XDG_CURRENT_DESKTOP" != "" ]]; then
+        CHAR_USER="→"
+    else
+        CHAR_USER="=>"
+    fi
+fi
+
 # Colors
 CL_NUM=`tput -T$TERM colors`
 CL_RESET='\[\033[0m\]'
@@ -49,6 +60,28 @@ else
     CL_BG_OFFSET=40
 fi
 
+# User colors
+declare -a CL_USER_ARRAY
+CL_USER_ARRAY[0]=$CL_BG_RED$CL_FG_CYAN
+CL_USER_ARRAY[1]=$CL_BG_BLUE$CL_FG_BLACK
+CL_USER_ARRAY[2]=$CL_BG_GREEN$CL_FG_RED
+CL_USER_ARRAY[3]=$CL_BG_WHITE$CL_FG_BLUE
+CL_USER_ARRAY[4]=$CL_BG_BLUE$CL_FG_MAGENTA
+CL_USER_ARRAY[5]=$CL_BG_WHITE$CL_FG_BLACK
+CL_USER_ARRAY[6]=$CL_BG_WHITE$CL_FG_RED
+CL_USER_ARRAY[7]=$CL_BG_YELLOW$CL_FG_BLUE
+CL_USER_ARRAY[8]=$CL_BG_GREEN$CL_FG_WHITE
+CL_USER_ARRAY[9]=$CL_BG_YELLOW$CL_FG_BLACK
+CL_USER_ARRAY[10]=$CL_BG_BLUE$CL_FG_WHITE
+CL_USER_ARRAY[11]=$CL_BG_GREEN$CL_FG_MAGENTA
+CL_USER_ARRAY[12]=$CL_BG_GREEN$CL_FG_BLACK
+
+if [[ $EUID -eq 0 ]]; then
+    CL_USER=${CL_USER_ARRAY[0]}
+else
+    CL_USER=${CL_USER_ARRAY[$((EUID % 12 + 1))]}
+fi
+
 prompt_command () {
     RETURN_CODE=$?
 
@@ -75,6 +108,7 @@ prompt_command () {
     if [[ "$LAST_PWD" != "$PWD" ]] ||
         [[ "$LAST_GIT_STATUS" != "$GIT_STATUS" ]]; then
         PS1="$CL_FG_BLACK"
+        PS1=$PS1"$CL_USER \u $CL_FG_BLACK"
         PS1=$PS1"$CL_BG_CYAN ${FORMATTED_DATE} "
         # Git
         if [[ $GIT_BRANCH != "" ]]; then
@@ -98,7 +132,7 @@ prompt_command () {
     PS1=$PS1"\$([ \j -gt 0 ] && echo \"(\j) \")"
     [[ $RETURN_CODE -ne 0 ]] && PS1=$PS1$CL_FG_RED ||
         PS1=$PS1$CL_FG_GREEN
-    PS1=$PS1"=> $CL_RESET"
+    PS1=$PS1"$CHAR_USER $CL_RESET"
 
     LAST_PWD=$PWD
     LAST_GIT_STATUS=$GIT_STATUS
