@@ -59,23 +59,34 @@ prompt_command () {
     GIT_BRANCH=
     if [ -d .git ] || git rev-parse --git-dir &> /dev/null; then
         GIT_BRANCH=`git rev-parse --abbrev-ref HEAD`
-        GIT_CHANGES=`git diff HEAD --name-only | wc -l`
-        [[ $GIT_CHANGES -gt 0 ]] &&
-        GIT_UNCOMMITTED=1 || GIT_UNCOMMITTED=0
+        GIT_UNCOMMITTED=`git diff HEAD --name-only | wc -l`
+        if [[ $GIT_UNCOMMITTED -gt 0 ]]; then
+            GIT_STATUS=uncommitted
+        else
+            # @{u} indicates the upstream branch
+            GIT_UNPUSHED=`git diff @{u}..HEAD --name-only | wc -l`
+            if [[ $GIT_UNPUSHED -gt 0 ]]; then
+                GIT_STATUS=unpushed
+            fi
+        fi
     fi
     if [[ "$LAST_PWD" != "$PWD" ]] ||
-        [[ "$LAST_GIT_UNCOMMITTED" != "$GIT_UNCOMMITTED" ]]; then
+        [[ "$LAST_GIT_STATUS" != "$GIT_STATUS" ]]; then
         PS1="$CL_FG_BLACK"
         PS1=$PS1"$CL_BG_CYAN ${FORMATTED_DATE} "
         # Git
         if [[ $GIT_BRANCH != "" ]]; then
+
             {
-                [[ $GIT_UNCOMMITTED -gt 0 ]] &&
+                [[ $GIT_STATUS == "uncommitted" ]] &&
                 CL_BG_GIT_BRANCH=$CL_BG_RED$CL_FG_WHITE
             } || {
-                CL_BG_GIT_BRANCH=$CL_BG_GREEN
-            } &&
-            PS1=$PS1"$CL_BG_GIT_BRANCH ($GIT_BRANCH) $CL_FG_BLACK"
+                [[ $GIT_STATUS == "unpushed" ]] &&
+                CL_BG_GIT_BRANCH=$CL_BG_YELLOW
+            } && {
+                PS1=$PS1"$CL_BG_GIT_BRANCH ($GIT_BRANCH) $CL_FG_BLACK"
+            }
+
         fi
         PS1=$PS1"$CL_BG_MAGENTA $PWD "
         PS1=$PS1"$CL_RESET\n"
@@ -87,7 +98,7 @@ prompt_command () {
     PS1=$PS1"=> $CL_RESET"
 
     LAST_PWD=$PWD
-    LAST_GIT_UNCOMMITTED=$GIT_UNCOMMITTED
+    LAST_GIT_STATUS=$GIT_STATUS
 }
 
 export PROMPT_COMMAND=prompt_command
