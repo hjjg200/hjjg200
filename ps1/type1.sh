@@ -83,6 +83,8 @@ prompt_command () {
             } || {
                 [[ $GIT_STATUS == "unpushed" ]] &&
                 CL_BG_GIT_BRANCH=$CL_BG_YELLOW
+            } || {
+                CL_BG_GIT_BRANCH=$CL_BG_GREEN
             } && {
                 PS1=$PS1"$CL_BG_GIT_BRANCH ($GIT_BRANCH) $CL_FG_BLACK"
             }
