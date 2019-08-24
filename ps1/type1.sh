@@ -49,31 +49,6 @@ else
     CL_BG_OFFSET=40
 fi
 
-# If root or not
-if [[ $EUID == 0 ]]; then
-    # root
-    CL_USER=$CL_FG_CYAN$CL_BG_RED
-    CHAR_USER='#'
-else
-    # Color array
-    CL_USER_BG_COLORS=(2 3 4 7)
-    CL_USER_FG_COLORS=(0 1 5 7 0 1 4 5 0 1 3 7 0 1 4 5)
-    CL_USER_KEY=$((EUID % 16))
-    CL_USER_BG=$((CL_USER_BG_COLORS[CL_USER_KEY / 4] + CL_BG_OFFSET))
-    CL_USER_FG=$((CL_USER_FG_COLORS[CL_USER_KEY % 4]))
-    # FG color
-    if [[ $CL_USER_FG -eq 0 ]]; then
-        CL_USER_FG=30
-    else
-        CL_USER_FG=$((CL_USER_FG + CL_FG_OFFSET))
-    fi
-
-    CL_USER="\[\033[$CL_USER_BG;${CL_USER_FG}m\]"
-    CHAR_USER='$'
-fi
-
-
-
 prompt_command () {
     RETURN_CODE=$?
 
