@@ -67,6 +67,8 @@ prompt_command () {
             GIT_UNPUSHED=`git diff @{u}..HEAD --name-only | wc -l`
             if [[ $GIT_UNPUSHED -gt 0 ]]; then
                 GIT_STATUS=unpushed
+            else
+                GIT_STATUS=
             fi
         fi
     fi
