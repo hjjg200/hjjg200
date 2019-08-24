@@ -76,7 +76,7 @@ prompt_command () {
         PS1=$PS1"$CL_BG_CYAN ${FORMATTED_DATE} "
         # Git
         if [[ $GIT_BRANCH != "" ]]; then
-
+            # Per status
             {
                 [[ $GIT_STATUS == "uncommitted" ]] &&
                 CL_BG_GIT_BRANCH=$CL_BG_RED$CL_FG_WHITE
@@ -86,7 +86,6 @@ prompt_command () {
             } && {
                 PS1=$PS1"$CL_BG_GIT_BRANCH ($GIT_BRANCH) $CL_FG_BLACK"
             }
-
         fi
         PS1=$PS1"$CL_BG_MAGENTA $PWD "
         PS1=$PS1"$CL_RESET\n"
