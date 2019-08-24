@@ -59,7 +59,7 @@ prompt_command () {
     GIT_BRANCH=
     if [ -d .git ] || git rev-parse --git-dir &> /dev/null; then
         GIT_BRANCH=`git rev-parse --abbrev-ref HEAD`
-        GIT_CHANGES=$((`git diff --cached --name-only | wc -l` + `git diff --name-only | wc -l`))
+        GIT_CHANGES=`git diff HEAD --name-only | wc -l`
         [[ $GIT_CHANGES -gt 0 ]] &&
         GIT_UNCOMMITTED=1 || GIT_UNCOMMITTED=0
     fi
