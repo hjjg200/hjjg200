@@ -108,7 +108,7 @@ prompt_command () {
     if [[ "$LAST_PWD" != "$PWD" ]] ||
         [[ "$LAST_GIT_STATUS" != "$GIT_STATUS" ]]; then
         PS1="$CL_FG_BLACK"
-        PS1=$PS1"$CL_USER \u $CL_FG_BLACK"
+        PS1=$PS1"$CL_USER \u@\H $CL_FG_BLACK"
         PS1=$PS1"$CL_BG_CYAN ${FORMATTED_DATE} "
         # Git
         if [[ $GIT_BRANCH != "" ]]; then
