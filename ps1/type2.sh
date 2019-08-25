@@ -106,7 +106,8 @@ prompt_command () {
             fi
         fi
     fi
-    if [[ "$LAST_DATE_MINUTES" -ne "$DATE_MINUTES" ]]; then
+    if [[ "$LAST_DATE_MINUTES" -ne "$DATE_MINUTES" ]] ||
+        [[ $LINENO -eq 0 ]]; then
         PS1="$CL_FG_BLACK"
         PS1=$PS1"$CL_USER \u@\H $CL_FG_BLACK"
         PS1=$PS1"$CL_BG_CYAN ${FORMATTED_DATE} "
@@ -130,7 +131,7 @@ prompt_command () {
             PS1=$PS1"$CL_BG_GIT_BRANCH($GIT_BRANCH) "
         }
     fi
-    PS1=$PS1"$CL_FG_YELLOW\W "
+    PS1=$PS1"$CL_FG_CYAN\W "
     [[ $RETURN_CODE -ne 0 ]] && PS1=$PS1$CL_FG_RED ||
         PS1=$PS1$CL_FG_GREEN
     PS1=$PS1"$CHAR_USER $CL_RESET"
