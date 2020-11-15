@@ -1,7 +1,8 @@
 
-let termColors = system('tput -T$TERM colors || echo 8')
+""" Colors
+let is256 = system('tput -T$TERM colors || echo 8') > 8
 
-if termColors > 8
+if is256
     " Set scheme and 256 colors
     set t_Co=256
     set background=dark
@@ -12,76 +13,110 @@ endif
 
 syntax enable " syntax highlighting
 
-set tabstop=4 " tab size
-set softtabstop=4 " space size
-set shiftwidth=4 " indent width
-set expandtab " spaces for indent
+""" macOS and Windows clipboard
+set clipboard=unnamed
 
+""" Whitespaces
+set tabstop=4     " tab size
+set softtabstop=4 " space size
+set shiftwidth=4  " indent width
+set expandtab     " spaces for indent
+
+""" Misc
 set showcmd " shows the latest command at bottom right
 
+""" Line highlight
 " No highlight for cursorline
 " Highlight the number of the current line
 set cursorline " highlight current line
-if termColors > 8
-    hi LineNr term=NONE cterm=NONE ctermfg=DarkGray
+if is256
+    " Line number color
+    hi LineNr       term=NONE cterm=NONE ctermfg=DarkGray
+    " Highlighted line number
     hi cursorLineNr term=NONE cterm=NONE ctermfg=White ctermbg=166
-    hi cursorline term=NONE cterm=NONE ctermbg=236
+    " Slightly highlight current line
+    hi cursorline   term=NONE cterm=NONE ctermbg=236
 else
-    hi LineNr term=NONE cterm=NONE ctermfg=Black ctermbg=Blue
+    hi LineNr       term=NONE cterm=NONE ctermfg=Black ctermbg=Blue
     hi cursorLineNr term=NONE cterm=NONE ctermfg=White ctermbg=Yellow
-    hi cursorline term=NONE cterm=NONE
+    hi cursorline   term=NONE cterm=NONE
 endif
-set showmatch " hightlight matching [{(
 
+""" Column highlight
+if exists('+colorcolumn')
+    set colorcolumn=80
+else
+  au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
+endif
+
+""" Misc highlight
+set showmatch " hightlight matching [{(
 set incsearch " search as you type
 set hlsearch  " highlight matches
 
+""" Show tab and trailing spaces
 set list
 " Show tab as >--- and trailing spaces as ~
 set listchars=tab:>-,trail:~
-    " Set the color of listchars
-if termColors > 8
+" Set the color of listchars
+if is256
     hi SpecialKey term=NONE cterm=NONE ctermfg=DarkGray
 else
     hi SpecialKey term=NONE cterm=NONE ctermfg=Blue
 endif
 
-" Toggle number
+""" Status line functions
+function! Wrap()
+    return &wrap ? 'wrap' : 'NOWRAP'
+endfunction
+
+function! Whitespace()
+    return &expandtab ? 'Spaces' : 'Tab'
+endfunction
+
+""" Status line arrangement
+set laststatus=2
+set statusline=
+set statusline+=%#PmenuSel#
+set statusline+=\ \ %f
+set statusline+=%m\ 
+set statusline+=%#LineNr#
+set statusline+=\ %{Wrap()},
+set statusline+=\ %{Whitespace()}
+set statusline+=%=
+set statusline+=\ %p%%\ of\ %L
+set statusline+=\ lines
+set statusline+=\ 
+
+""" Toggle line number
 set number!
 
-" Enable line wrapping
-set wrap " nowrap is no wrapping
+""" Enable line wrapping
+set nowrap! " toggle wrapping
 
-" Key mappings
-    " Toggle line number
+""" Key mappings
+" Toggle line number
 vnoremap <C-B>b :set number!<CR>
 nnoremap <C-B>b :set number!<CR>
 inoremap <C-B>b <C-O>:set number!<CR>
-    " Syntax shorthand
-vnoremap <C-B>n :set syntax=
-nnoremap <C-B>n :set syntax=
-inoremap <C-B>n <C-O>:set syntax=
-    " Tab size shortand
-vnoremap <C-B>m :set softtabstop=
-nnoremap <C-B>m :set softtabstop=
-inoremap <C-B>m <C-O>:set softtabstop=
-    " Resizing
+" Toggle wrapping
+vnoremap <C-B>z :set nowrap!<CR>
+nnoremap <C-B>z :set nowrap!<CR>
+inoremap <C-B>z <C-O>:set nowrap!<CR>
+" Window resizing
 noremap <C-K> :res +1<CR>
 noremap <C-L> :res -1<CR>
-    " Silently search selected word when pressing period in
-    " normal mode
-    " <C-r><C-w> is substituted with the current word
-    " \<foo\> is block search
-    " N is to return to the current word
+
+""" Searching
+" Silently search selected word when pressing period in
+" normal mode
+" <C-r><C-w> is substituted with the current word
+" \<foo\> is block search
+" N is to return to the current word
 "noremap <silent> . /\<<C-r><C-w>\><CR>N
-    " * does search of the current word
+" * does search of the current word
 noremap <silent> . *N
 
 " Set very magic for every search in normal and visual mode
 nnoremap / /\v
 vnoremap / /\v
-
-" Select all
-nnoremap <C-A> ggVG
-inoremap <C-A> <ESC>ggVG
-vnoremap <C-A> ggVG
