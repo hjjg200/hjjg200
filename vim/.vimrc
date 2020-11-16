@@ -1,4 +1,9 @@
 
+""" Swap files
+let swapd = $HOME . '/.vim/swap'
+let mkdir = system('mkdir -p ' . expand(swapd))
+let &directory=swapd . '//'
+
 """ Colors
 let is256 = system('tput -T$TERM colors || echo 8') > 8
 
@@ -127,7 +132,7 @@ noremap <C-K>k <C-W>_
 " N is to return to the current word
 "noremap <silent> . /\<<C-r><C-w>\><CR>N
 " * does search of the current word
-noremap <silent> . *N
+noremap <silent> . *Ne
 
 " Set very magic for every search in normal and visual mode
 nnoremap / /\v
