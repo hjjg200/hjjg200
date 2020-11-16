@@ -6,6 +6,7 @@ if is256
     " Set scheme and 256 colors
     set t_Co=256
     set background=dark
+    let g:gruvbox_contrast_dark = 'hard'
     colorscheme gruvbox
 else
     set t_Co=8
@@ -74,16 +75,21 @@ function! Whitespace()
     return &expandtab ? 'Spaces' : 'Tab'
 endfunction
 
+""" Status line color
+" hi! overrides
+hi! link StatusLine PmenuSel
+
 """ Status line arrangement
 set laststatus=2
 set statusline=
-set statusline+=%#PmenuSel#
 set statusline+=\ \ %f
 set statusline+=%m\ 
-set statusline+=%#LineNr#
+set statusline+=%#Normal#
 set statusline+=\ %{Wrap()},
-set statusline+=\ %{Whitespace()}
+set statusline+=\ %{Whitespace()},
+set statusline+=\ %y
 set statusline+=%=
+set statusline+=%#LineNr#
 set statusline+=\ %p%%\ of\ %L
 set statusline+=\ lines
 set statusline+=\ 
@@ -91,7 +97,7 @@ set statusline+=\
 """ Toggle line number
 set number!
 
-""" Enable line wrapping
+""" No word wrapping
 set nowrap! " toggle wrapping
 
 """ Key mappings
@@ -104,8 +110,14 @@ vnoremap <C-B>z :set nowrap!<CR>
 nnoremap <C-B>z :set nowrap!<CR>
 inoremap <C-B>z <C-O>:set nowrap!<CR>
 " Window resizing
-noremap <C-K> :res +1<CR>
-noremap <C-L> :res -1<CR>
+vnoremap <C-K> :res +1<CR>
+nnoremap <C-K> :res +1<CR>
+inoremap <C-K> <C-O>:res +1<CR>
+vnoremap <C-L> :res -1<CR>
+nnoremap <C-L> :res -1<CR>
+inoremap <C-L> <C-O>:res -1<CR>
+    " Maximize
+noremap <C-K>k <C-W>_
 
 """ Searching
 " Silently search selected word when pressing period in
