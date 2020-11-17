@@ -3,12 +3,12 @@
 git_branch() {
 
     br=$(git rev-parse --abbrev-ref HEAD 2> /dev/null)
-    if [ -z $br ]; then
+    if [ $? -ne 0 ] || [ -z $br ]; then
         return 0
     fi
 
-    uc=$(git diff HEAD --name-only | wc -l)
-    up=$(git diff @{u}..HEAD --name-only | wc -l)
+    uc=$(git diff HEAD --name-only 2> /dev/null | wc -l)
+    up=$(git diff @{u}..HEAD --name-only 2> /dev/null | wc -l)
 
     m=
     if [ $((uc + up)) -gt 0 ]; then
