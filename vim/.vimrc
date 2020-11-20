@@ -5,7 +5,7 @@ let mkdir = system('mkdir -p ' . expand(swapd))
 let &directory=swapd . '//'
 
 """ Colors
-let is256 = system('tput -T$TERM colors || echo 8') > 8
+let is256 = system('tput -T$TERM colors || echo 8') >= 256
 
 if is256
     " Set scheme and 256 colors
@@ -37,22 +37,25 @@ set showcmd " shows the latest command at bottom right
 set cursorline " highlight current line
 if is256
     " Line number color
-    hi LineNr       term=NONE cterm=NONE ctermfg=DarkGray
+    hi! LineNr       cterm=NONE ctermfg=DarkGray
     " Highlighted line number
-    hi cursorLineNr term=NONE cterm=NONE ctermfg=White ctermbg=166
+    hi! CursorLineNr cterm=NONE ctermfg=White ctermbg=166
     " Slightly highlight current line
-    hi cursorline   term=NONE cterm=NONE ctermbg=236
+    hi! Cursorline   cterm=NONE ctermbg=236
 else
-    hi LineNr       term=NONE cterm=NONE ctermfg=Black ctermbg=Blue
-    hi cursorLineNr term=NONE cterm=NONE ctermfg=White ctermbg=Yellow
-    hi cursorline   term=NONE cterm=NONE
+    hi! LineNr       cterm=NONE ctermfg=Gray ctermbg=NONE
+    hi! CursorLineNr cterm=inverse ctermfg=Blue ctermbg=NONE
+    hi! Cursorline   NONE
+    hi! Search       cterm=inverse ctermfg=Yellow ctermbg=NONE
+    hi! PmenuSel     cterm=inverse ctermfg=Cyan ctermbg=NONE
+    hi! ColorColumn  ctermbg=Gray
 endif
 
 """ Column highlight
 if exists('+colorcolumn')
     set colorcolumn=80
 else
-  au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
+    au BufWinEnter * let w:m2=matchadd('CursorColumn', '\%>80v.\+', -1)
 endif
 
 """ Misc highlight
@@ -66,9 +69,9 @@ set list
 set listchars=tab:>-,trail:~
 " Set the color of listchars
 if is256
-    hi SpecialKey term=NONE cterm=NONE ctermfg=DarkGray
+    hi SpecialKey cterm=NONE ctermfg=DarkGray
 else
-    hi SpecialKey term=NONE cterm=NONE ctermfg=Blue
+    hi SpecialKey cterm=NONE ctermfg=Blue
 endif
 
 """ Status line functions
@@ -137,3 +140,5 @@ noremap <silent> . *Ne
 " Set very magic for every search in normal and visual mode
 nnoremap / /\v
 vnoremap / /\v
+" Set very magic for substitute
+cnoremap %s/ %s/\v
