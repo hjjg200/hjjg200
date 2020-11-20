@@ -5,16 +5,15 @@ let mkdir = system('mkdir -p ' . expand(swapd))
 let &directory=swapd . '//'
 
 """ Colors
-let is256 = system('tput -T$TERM colors || echo 8') >= 256
-
-if is256
+let term = system('tput -T$TERM colors || echo 8')
+if term >= 256
     " Set scheme and 256 colors
     set t_Co=256
     set background=dark
     let g:gruvbox_contrast_dark = 'hard'
     colorscheme gruvbox
 else
-    set t_Co=8
+    let &t_Co = term
 endif
 
 syntax enable " syntax highlighting
@@ -35,7 +34,7 @@ set showcmd " shows the latest command at bottom right
 " No highlight for cursorline
 " Highlight the number of the current line
 set cursorline " highlight current line
-if is256
+if term >= 256
     " Line number color
     hi! LineNr       cterm=NONE ctermfg=DarkGray
     " Highlighted line number
@@ -68,7 +67,7 @@ set list
 " Show tab as >--- and trailing spaces as ~
 set listchars=tab:>-,trail:~
 " Set the color of listchars
-if is256
+if term >= 256
     hi SpecialKey cterm=NONE ctermfg=DarkGray
 else
     hi SpecialKey cterm=NONE ctermfg=Blue
@@ -86,6 +85,7 @@ endfunction
 """ Status line color
 " hi! overrides
 hi! link StatusLine PmenuSel
+hi! link MatchParen PmenuSel
 
 """ Status line arrangement
 set laststatus=2
