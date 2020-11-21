@@ -45,7 +45,7 @@ pcmd() {
     o=
 
     # Dir
-    o=$o'%F{blue}%2d%f '
+    o=$o'🗂  %F{blue}%2d%f '
 
     # Return status
     if [ $lr -eq 0 ]; then

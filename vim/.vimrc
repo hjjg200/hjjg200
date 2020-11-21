@@ -6,6 +6,7 @@ let &directory=swapd . '//'
 
 """ Colors
 let term = system('tput -T$TERM colors || echo 8')
+let term = 16
 if term >= 256
     " Set scheme and 256 colors
     set t_Co=256
@@ -36,9 +37,9 @@ set showcmd " shows the latest command at bottom right
 set cursorline " highlight current line
 if term >= 256
     " Line number color
-    hi! LineNr       cterm=NONE ctermfg=DarkGray
+    hi! LineNr       cterm=NONE ctermfg=239
     " Highlighted line number
-    hi! CursorLineNr cterm=NONE ctermfg=White ctermbg=166
+    hi! CursorLineNr cterm=bold ctermfg=231 ctermbg=57
     " Slightly highlight current line
     hi! Cursorline   cterm=NONE ctermbg=236
 else
@@ -47,7 +48,18 @@ else
     hi! Cursorline   NONE
     hi! Search       cterm=inverse ctermfg=Yellow ctermbg=NONE
     hi! PmenuSel     cterm=inverse ctermfg=Cyan ctermbg=NONE
-    hi! ColorColumn  ctermbg=Gray
+    hi! ColorColumn  ctermbg=White
+    hi! link StatusLineNC LineNr
+    " Syntax
+    hi! Comment      ctermfg=Gray
+    hi! Type         cterm=bold ctermfg=Blue
+    hi! Constant     cterm=bold ctermfg=Yellow
+    hi! PreProc      cterm=bold ctermfg=Red
+    hi! Statement    cterm=bold ctermfg=Blue
+    hi! Special      cterm=bold ctermfg=Green
+    hi! Identifier   cterm=bold ctermfg=Magenta
+    " General
+    hi! ErrorMsg     cterm=reverse ctermfg=Red
 endif
 
 """ Column highlight
@@ -92,7 +104,7 @@ set laststatus=2
 set statusline=
 set statusline+=\ \ %f
 set statusline+=%m\ 
-set statusline+=%#Normal#
+set statusline+=%#Directory#
 set statusline+=\ %{Wrap()},
 set statusline+=\ %{Whitespace()},
 set statusline+=\ %y
@@ -104,6 +116,12 @@ set statusline+=\
 
 """ Toggle line number
 set number!
+
+""" Scroll off
+set scrolloff=7
+
+""" No auto indent
+set noautoindent
 
 """ No word wrapping
 set nowrap! " toggle wrapping
