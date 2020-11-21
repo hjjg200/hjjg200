@@ -45,7 +45,10 @@ pcmd() {
     o=
 
     # Dir
-    o=$o'🗂  %F{blue}%2d%f '
+    ## Fixed width emoji
+    ## https://github.com/ohmyzsh/ohmyzsh/issues/7945#issuecomment-508724741
+    o=$o'%{%G🗂%}'
+    o=$o'  %F{blue}%2d%f '
 
     # Return status
     if [ $lr -eq 0 ]; then
