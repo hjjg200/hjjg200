@@ -6,7 +6,6 @@ let &directory=swapd . '//'
 
 """ Colors
 let term = system('tput -T$TERM colors || echo 8')
-let term = 16
 if term >= 256
     " Set scheme and 256 colors
     set t_Co=256
