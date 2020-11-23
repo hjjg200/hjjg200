@@ -21,6 +21,18 @@ syntax enable " syntax highlighting
 """ macOS and Windows clipboard
 set clipboard=unnamed
 
+""" Complete (insert mode completion)
+" <C-P> to open menu
+set completeopt=menu,menuone,preview,noselect
+" open menu on keys
+for char in ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+    execute "inoremap <expr> ".char." pumvisible() ? \"".char."\" : \"".char."\<C-P>\""
+endfor
+
+""" Wildmenu (vim command completion)
+set wildmode=list,longest
+set wildmenu
+
 """ Whitespaces
 set tabstop=4     " tab size
 set softtabstop=4 " space size
@@ -45,20 +57,21 @@ else
     hi! LineNr       cterm=NONE ctermfg=Gray ctermbg=NONE
     hi! CursorLineNr cterm=inverse ctermfg=Blue ctermbg=NONE
     hi! Cursorline   NONE
+    hi! Visual       cterm=inverse ctermfg=Magenta ctermbg=NONE
     hi! Search       cterm=inverse ctermfg=Yellow ctermbg=NONE
     hi! PmenuSel     cterm=inverse ctermfg=Cyan ctermbg=NONE
     hi! ColorColumn  ctermbg=White
     hi! link StatusLineNC LineNr
     " Syntax
     hi! Comment      ctermfg=Gray
-    hi! Type         cterm=bold ctermfg=Blue
-    hi! Constant     cterm=bold ctermfg=Yellow
-    hi! PreProc      cterm=bold ctermfg=Red
-    hi! Statement    cterm=bold ctermfg=Blue
-    hi! Special      cterm=bold ctermfg=Green
-    hi! Identifier   cterm=bold ctermfg=Magenta
+    hi! Type         ctermfg=Blue
+    hi! Constant     ctermfg=Yellow
+    hi! PreProc      ctermfg=Magenta
+    hi! Statement    ctermfg=Blue
+    hi! Special      ctermfg=Green
+    hi! Identifier   ctermfg=Magenta
     " General
-    hi! ErrorMsg     cterm=reverse ctermfg=Red
+    hi! ErrorMsg     cterm=reverse ctermfg=Red ctermbg=NONE
 endif
 
 """ Column highlight
@@ -126,23 +139,36 @@ set noautoindent
 set nowrap! " toggle wrapping
 
 """ Key mappings
-" Toggle line number
+"" Toggle line number
 vnoremap <C-B>b :set number!<CR>
 nnoremap <C-B>b :set number!<CR>
 inoremap <C-B>b <C-O>:set number!<CR>
-" Toggle wrapping
+"" Toggle wrapping
 vnoremap <C-B>z :set nowrap!<CR>
 nnoremap <C-B>z :set nowrap!<CR>
 inoremap <C-B>z <C-O>:set nowrap!<CR>
-" Window resizing
-vnoremap <C-K> :res +1<CR>
-nnoremap <C-K> :res +1<CR>
-inoremap <C-K> <C-O>:res +1<CR>
-vnoremap <C-L> :res -1<CR>
-nnoremap <C-L> :res -1<CR>
-inoremap <C-L> <C-O>:res -1<CR>
-    " Maximize
-noremap <C-K>k <C-W>_
+"" Window resizing
+"vnoremap <C-K> :res +1<CR>
+"nnoremap <C-K> :res +1<CR>
+"inoremap <C-K> <C-O>:res +1<CR>
+"vnoremap <C-L> :res -1<CR>
+"nnoremap <C-L> :res -1<CR>
+"inoremap <C-L> <C-O>:res -1<CR>
+" Maximize
+"noremap <C-K>k <C-W>_
+"" Scroll left right
+vnoremap <C-K> zh
+nnoremap <C-K> zh
+inoremap <C-K> <C-O>zh
+vnoremap <C-K>k zH
+nnoremap <C-K>k zH
+inoremap <C-K>k <C-O>zH
+vnoremap <C-L> zl
+nnoremap <C-L> zl
+inoremap <C-L> <C-O>zl
+vnoremap <C-L>l zL
+nnoremap <C-L>l zL
+inoremap <C-L>l <C-O>zL
 
 """ Searching
 " Silently search selected word when pressing period in
