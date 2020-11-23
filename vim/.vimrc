@@ -1,5 +1,7 @@
 
 """ Swap files
+" Automatically create swap directory and set it as swap location
+" It's to prevent committing *.swap
 let swapd = $HOME . '/.vim/swap'
 let mkdir = system('mkdir -p ' . expand(swapd))
 let &directory=swapd . '//'
@@ -16,9 +18,10 @@ else
     let &t_Co = term
 endif
 
-syntax enable " syntax highlighting
+""" Enable syntax
+syntax enable
 
-""" macOS and Windows clipboard
+""" macOS and Windows copy to native clipboard
 set clipboard=unnamed
 
 """ Complete (insert mode completion)
@@ -46,76 +49,77 @@ set expandtab     " spaces for indent
 """ Misc
 set showcmd " shows the latest command at bottom right
 
-""" Line highlight
-" No highlight for cursorline
-" Highlight the number of the current line
-set cursorline " highlight current line
+""" Highlights
+" Highlight current line
+set cursorline
 if term >= 256
-    " Line number color
     hi! LineNr       cterm=NONE ctermfg=239
-    " Highlighted line number
     hi! CursorLineNr cterm=bold ctermfg=231 ctermbg=57
-    " Slightly highlight current line
     hi! Cursorline   cterm=NONE ctermbg=236
+    " Links
+    hi! link ColorColumn Cursorline
 else
-    hi! LineNr       cterm=NONE ctermfg=Gray ctermbg=NONE
+    hi! LineNr       cterm=NONE ctermfg=White ctermbg=NONE
     hi! CursorLineNr cterm=inverse ctermfg=Blue ctermbg=NONE
     hi! Cursorline   NONE
+    hi! ColorColumn  ctermbg=White
+    hi! ErrorMsg     cterm=reverse ctermfg=Red ctermbg=NONE
     hi! Visual       cterm=inverse ctermfg=Magenta ctermbg=NONE
     hi! Search       cterm=inverse ctermfg=Yellow ctermbg=NONE
+    hi! Pmenu        ctermbg=White ctermfg=Black
     hi! PmenuSel     cterm=inverse ctermfg=Cyan ctermbg=NONE
-    hi! ColorColumn  ctermbg=White
-    hi! link StatusLineNC LineNr
+    hi! PmenuSbar    ctermbg=White
+    hi! PmenuThumb   ctermbg=Gray
     " Syntax
     hi! Comment      ctermfg=Gray
     hi! Type         ctermfg=Blue
     hi! Constant     ctermfg=Yellow
-    hi! PreProc      ctermfg=Magenta
+    hi! PreProc      ctermfg=Red
     hi! Statement    ctermfg=Blue
-    hi! Special      ctermfg=Green
+    hi! Special      ctermfg=Red
     hi! Identifier   ctermfg=Magenta
-    " General
-    hi! ErrorMsg     cterm=reverse ctermfg=Red ctermbg=NONE
+    " Links
+    hi! link StatusLineNC LineNr
 endif
+"" Common highlight overrides
+hi! link MatchParen PmenuSel
 
-""" Column highlight
+""" 80 column highlight
 if exists('+colorcolumn')
     set colorcolumn=80
 else
-    au BufWinEnter * let w:m2=matchadd('CursorColumn', '\%>80v.\+', -1)
+    au BufWinEnter * let w:m2=matchadd('ColorColumn', '\%>80v.\+', -1)
 endif
 
 """ Misc highlight
-set showmatch " hightlight matching [{(
+set showmatch " hightlight matching paren
 set incsearch " search as you type
 set hlsearch  " highlight matches
 
 """ Show tab and trailing spaces
 set list
-" Show tab as >--- and trailing spaces as ~
-set listchars=tab:>-,trail:~
+" Show tab as >>>> and trailing spaces as ~
+set listchars=tab:>>,trail:~
 " Set the color of listchars
 if term >= 256
     hi SpecialKey cterm=NONE ctermfg=DarkGray
 else
-    hi SpecialKey cterm=NONE ctermfg=Blue
+    hi SpecialKey cterm=inverse ctermbg=NONE ctermfg=White
 endif
 
-""" Status line functions
+""" Status line settings
+"" Status line functions
 function! Wrap()
     return &wrap ? 'wrap' : 'NOWRAP'
 endfunction
-
 function! Whitespace()
     return &expandtab ? 'Spaces' : 'Tab'
 endfunction
 
-""" Status line color
-" hi! overrides
+"" Status line color
 hi! link StatusLine PmenuSel
-hi! link MatchParen PmenuSel
 
-""" Status line arrangement
+"" Status line arrangement
 set laststatus=2
 set statusline=
 set statusline+=\ \ %f
@@ -125,13 +129,10 @@ set statusline+=\ %{Wrap()},
 set statusline+=\ %{Whitespace()},
 set statusline+=\ %y
 set statusline+=%=
-set statusline+=%#LineNr#
+set statusline+=%#Comment#
 set statusline+=\ %p%%\ of\ %L
 set statusline+=\ lines
 set statusline+=\ 
-
-""" Toggle line number
-set number!
 
 """ Scroll off
 set scrolloff=7
@@ -139,28 +140,29 @@ set scrolloff=7
 """ No auto indent
 set noautoindent
 
-""" No word wrapping
-set nowrap! " toggle wrapping
-
-""" Key mappings
-"" Toggle line number
+""" Toggle line number
+set number!
 vnoremap <C-B>b :set number!<CR>
 nnoremap <C-B>b :set number!<CR>
 inoremap <C-B>b <C-O>:set number!<CR>
-"" Toggle wrapping
+
+""" Toggle wrapping
+set nowrap!
 vnoremap <C-B>z :set nowrap!<CR>
 nnoremap <C-B>z :set nowrap!<CR>
 inoremap <C-B>z <C-O>:set nowrap!<CR>
-"" Window resizing
+
+""" Window resizing
 "vnoremap <C-K> :res +1<CR>
 "nnoremap <C-K> :res +1<CR>
 "inoremap <C-K> <C-O>:res +1<CR>
 "vnoremap <C-L> :res -1<CR>
 "nnoremap <C-L> :res -1<CR>
 "inoremap <C-L> <C-O>:res -1<CR>
-" Maximize
+"" Maximize
 "noremap <C-K>k <C-W>_
-"" Scroll left right
+
+""" Scroll left right
 vnoremap <C-K> zh
 nnoremap <C-K> zh
 inoremap <C-K> <C-O>zh
@@ -187,5 +189,3 @@ noremap <silent> . *Ne
 " Set very magic for every search in normal and visual mode
 nnoremap / /\v
 vnoremap / /\v
-" Set very magic for substitute
-cnoremap %s/ %s/\v
