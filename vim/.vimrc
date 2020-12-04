@@ -6,6 +6,9 @@ let swapd = $HOME . '/.vim/swap'
 let mkdir = system('mkdir -p ' . expand(swapd))
 let &directory=swapd . '//'
 
+""" Syntax
+syntax enable
+
 """ Colors
 let term = system('tput -T$TERM colors || echo 8')
 if term >= 256
@@ -17,9 +20,6 @@ if term >= 256
 else
     let &t_Co = term
 endif
-
-""" Enable syntax
-syntax enable
 
 """ macOS and Windows copy to native clipboard
 set clipboard=unnamed
@@ -59,25 +59,35 @@ if term >= 256
     " Links
     hi! link ColorColumn Cursorline
 else
-    hi! LineNr       cterm=NONE ctermfg=White ctermbg=NONE
+    hi! LineNr       cterm=NONE ctermfg=DarkGray ctermbg=NONE
     hi! CursorLineNr cterm=inverse ctermfg=Blue ctermbg=NONE
     hi! Cursorline   NONE
-    hi! ColorColumn  ctermbg=White
+    hi! ColorColumn  ctermbg=DarkGray
     hi! ErrorMsg     cterm=reverse ctermfg=Red ctermbg=NONE
     hi! Visual       cterm=inverse ctermfg=Magenta ctermbg=NONE
     hi! Search       cterm=inverse ctermfg=Yellow ctermbg=NONE
-    hi! Pmenu        ctermbg=White ctermfg=Black
+    hi! Pmenu        ctermbg=DarkGray ctermfg=White
     hi! PmenuSel     cterm=inverse ctermfg=Cyan ctermbg=NONE
-    hi! PmenuSbar    ctermbg=White
+    hi! PmenuSbar    ctermbg=DarkGray
     hi! PmenuThumb   ctermbg=Gray
+    hi! DiffAdd      cterm=inverse,bold ctermfg=Green ctermbg=NONE
+    hi! DiffDelete   cterm=inverse,bold ctermfg=Red ctermbg=NONE
+    hi! DiffChange   ctermfg=Gray ctermbg=DarkGray
+    hi! DiffText     cterm=inverse,bold ctermfg=Yellow ctermbg=NONE
     " Syntax
-    hi! Comment      ctermfg=Gray
-    hi! Type         ctermfg=Blue
-    hi! Constant     ctermfg=Yellow
-    hi! PreProc      ctermfg=Red
-    hi! Statement    ctermfg=Blue
-    hi! Special      ctermfg=Red
-    hi! Identifier   ctermfg=Magenta
+    hi! Comment      cterm=NONE ctermfg=Gray
+    hi! Type         cterm=NONE ctermfg=Blue
+    hi! Constant     cterm=NONE ctermfg=Yellow
+    hi! Number       cterm=NONE ctermfg=Green
+    hi! link Float Number
+    hi! link Character Number
+    hi! Boolean      cterm=NONE ctermfg=Yellow
+    hi! PreProc      cterm=NONE ctermfg=Red
+    hi! Statement    cterm=NONE ctermfg=Blue
+    hi! Label        cterm=NONE ctermfg=Cyan
+    hi! Special      cterm=NONE ctermfg=Red
+    hi! Identifier   cterm=NONE ctermfg=Magenta
+    hi! Ignore       cterm=NONE ctermfg=DarkGray
     " Links
     hi! link StatusLineNC LineNr
 endif
@@ -99,12 +109,12 @@ set hlsearch  " highlight matches
 """ Show tab and trailing spaces
 set list
 " Show tab as >>>> and trailing spaces as ~
-set listchars=tab:>>,trail:~
+set listchars=tab:>-,trail:~
 " Set the color of listchars
 if term >= 256
     hi SpecialKey cterm=NONE ctermfg=DarkGray
 else
-    hi SpecialKey cterm=inverse ctermbg=NONE ctermfg=White
+    hi SpecialKey cterm=inverse ctermbg=NONE ctermfg=DarkGray
 endif
 
 """ Status line settings
@@ -113,7 +123,7 @@ function! Wrap()
     return &wrap ? 'wrap' : 'NOWRAP'
 endfunction
 function! Whitespace()
-    return &expandtab ? 'Spaces' : 'Tab'
+    return &expandtab ? &softtabstop . ' Spaces' : &tabstop . ' Tab'
 endfunction
 
 "" Status line color
@@ -189,3 +199,14 @@ noremap <silent> . *Ne
 " Set very magic for every search in normal and visual mode
 nnoremap / /\v
 vnoremap / /\v
+
+""" Per-extension settings
+" 2 Spaces
+for ext in ["yaml", "json", "html", "javascript"]
+    execute "autocmd FileType ".ext." setlocal shiftwidth=2 softtabstop=2"
+endfor
+
+" Python syntax
+hi! link pythonSpecial Label
+autocmd Syntax python syn keyword pythonSpecial self
+autocmd Syntax python syn keyword pythonSpecial cls
