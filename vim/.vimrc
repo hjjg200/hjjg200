@@ -29,7 +29,7 @@ set clipboard=unnamed
 set completeopt=menu,menuone,preview,noselect
 " open menu on keys
 for char in ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
-    execute "inoremap <expr> ".char." pumvisible() ? \"".char."\" : \"".char."\<C-P>\""
+    execute "inoremap <expr> ".char." pumvisible() ? \"\<C-E>".char."\<C-P>\" : \"".char."\<C-P>\""
 endfor
 "" Do not display completion messages
 " :help shortmess
@@ -197,8 +197,9 @@ inoremap <C-L>l <C-O>zL
 noremap <silent> . *Ne
 
 " Set very magic for every search in normal and visual mode
-nnoremap / /\v
-vnoremap / /\v
+" And starting search automatically clears search
+nnoremap / :noh<cr>/\v
+vnoremap / :noh<cr>/\v
 
 """ Per-extension settings
 " 2 Spaces
