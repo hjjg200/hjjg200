@@ -6,6 +6,9 @@ let swapd = $HOME . '/.vim/swap'
 let mkdir = system('mkdir -p ' . expand(swapd))
 let &directory=swapd . '//'
 
+""" I'm no vi anymore
+set nocompatible
+
 """ Syntax
 syntax enable
 
@@ -26,7 +29,12 @@ set clipboard=unnamed
 
 """ Complete (insert mode completion)
 " <C-P> to open menu
-set completeopt=menu,menuone,preview,noselect
+set completeopt=menu,menuone,preview,noselect,noinsert
+" Compatibility settings
+inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<CR>"
+" Up down arrows in insert mode
+inoremap <expr> <C-J> pumvisible() ? "\<C-N>" : "\<C-O>j"
+inoremap <expr> <C-K> pumvisible() ? "\<C-P>" : "\<C-O>k"
 " open menu on keys
 for char in ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
     execute "inoremap <expr> ".char." pumvisible() ? \"\<C-E>".char."\<C-P>\" : \"".char."\<C-P>\""
@@ -145,7 +153,7 @@ set statusline+=\ lines
 set statusline+=\ 
 
 """ Scroll off
-set scrolloff=7
+set scrolloff=999
 
 """ No auto indent
 set noautoindent
@@ -162,37 +170,23 @@ vnoremap <C-B>z :set nowrap!<CR>
 nnoremap <C-B>z :set nowrap!<CR>
 inoremap <C-B>z <C-O>:set nowrap!<CR>
 
-""" Window resizing
-"vnoremap <C-K> :res +1<CR>
-"nnoremap <C-K> :res +1<CR>
-"inoremap <C-K> <C-O>:res +1<CR>
-"vnoremap <C-L> :res -1<CR>
-"nnoremap <C-L> :res -1<CR>
-"inoremap <C-L> <C-O>:res -1<CR>
-"" Maximize
-"noremap <C-K>k <C-W>_
+""" Scroll left, right
+function CursorDir()
+    let half = winwidth(0) / 2 - 5
+    let col = col('.')
+    return (col > half) - (col < half)
+endfunction
 
-""" Scroll left right
-vnoremap <C-K> zh
-nnoremap <C-K> zh
-inoremap <C-K> <C-O>zh
-vnoremap <C-K>k zH
-nnoremap <C-K>k zH
-inoremap <C-K>k <C-O>zH
-vnoremap <C-L> zl
-nnoremap <C-L> zl
-inoremap <C-L> <C-O>zl
-vnoremap <C-L>l zL
-nnoremap <C-L>l zL
-inoremap <C-L>l <C-O>zL
+vnoremap <expr> h CursorDir() == 1 ? "zhh" : "h"
+nnoremap <expr> h CursorDir() == 1 ? "zhh" : "h"
+imap <expr> <C-H> CursorDir() == 1 ? "\<C-O>zh\<C-O>h" : "\<C-O>h"
+vnoremap <expr> l CursorDir() == -1 ? "l" : "zll"
+nnoremap <expr> l CursorDir() == -1 ? "l" : "zll"
+imap <expr> <C-L> CursorDir() == -1 ? "\<C-O>l" : "\<C-O>zl\<C-O>l"
 
 """ Searching
 " Silently search selected word when pressing period in
 " normal mode
-" <C-r><C-w> is substituted with the current word
-" \<foo\> is block search
-" N is to return to the current word
-"noremap <silent> . /\<<C-r><C-w>\><CR>N
 " * does search of the current word
 noremap <silent> . *Ne
 
