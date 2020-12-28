@@ -8,6 +8,10 @@ let &directory=swapd . '//'
 
 """ I'm no vi anymore
 set nocompatible
+set backspace=2
+
+""" Recursive path search
+set path+=**
 
 """ Syntax
 syntax enable
@@ -82,6 +86,9 @@ else
     hi! DiffDelete   cterm=inverse,bold ctermfg=Red ctermbg=NONE
     hi! DiffChange   ctermfg=Gray ctermbg=DarkGray
     hi! DiffText     cterm=inverse,bold ctermfg=Yellow ctermbg=NONE
+    hi! TabLineSel   cterm=bold ctermfg=White ctermbg=NONE
+    hi! TabLineFill  cterm=NONE ctermbg=DarkGray
+    hi! TabLine      cterm=NONE ctermbg=DarkGray ctermfg=LightGray
     " Syntax
     hi! Comment      cterm=NONE ctermfg=Gray
     hi! Type         cterm=NONE ctermfg=Blue
@@ -122,7 +129,7 @@ set listchars=tab:>-,trail:~
 if term >= 256
     hi SpecialKey cterm=NONE ctermfg=DarkGray
 else
-    hi SpecialKey cterm=inverse ctermbg=NONE ctermfg=DarkGray
+    hi SpecialKey ctermfg=Cyan
 endif
 
 """ Status line settings
@@ -140,7 +147,7 @@ hi! link StatusLine PmenuSel
 "" Status line arrangement
 set laststatus=2
 set statusline=
-set statusline+=\ \ %f
+set statusline+=\ \ %{expand('%:~:.')}
 set statusline+=%m\ 
 set statusline+=%#Directory#
 set statusline+=\ %{Wrap()},
@@ -149,7 +156,7 @@ set statusline+=\ %y
 set statusline+=%=
 set statusline+=%#Comment#
 set statusline+=\ %p%%\ of\ %L
-set statusline+=\ lines
+set statusline+=L
 set statusline+=\ 
 
 """ Scroll off
@@ -184,6 +191,69 @@ vnoremap <expr> l CursorDir() == -1 ? "l" : "zll"
 nnoremap <expr> l CursorDir() == -1 ? "l" : "zll"
 imap <expr> <C-L> CursorDir() == -1 ? "\<C-O>l" : "\<C-O>zl\<C-O>l"
 
+""" Netrw
+let g:netrw_banner = 0
+let g:netrw_browse_split = 3
+let g:netrw_altv = 1
+let g:netrw_hide = 0
+let g:netrw_liststyle = 3
+let g:netrw_list_hide = netrw_gitignore#Hide()
+
+""" Tab
+nnoremap <Tab>h gT
+nnoremap <Tab><Left> gT
+nnoremap <Tab>l gt
+nnoremap <Tab><Right> gt
+
+hi TabLineSelNr ctermfg=Magenta ctermbg=NONE
+hi TabLineNr ctermfg=Magenta ctermbg=DarkGray
+set showtabline=2
+set tabline=%!TabLine()
+
+function TabLine()
+    let s = ''
+    let t = tabpagenr()
+    let n = 1
+    while n <= tabpagenr('$')
+
+        let sel = n == t
+        let bufs = tabpagebuflist(n)
+        let winnr = tabpagewinnr(n)
+        let buf = bufs[winnr - 1]
+        let info = getbufinfo(buf)
+
+        let tc = sel ? "%#TabLineSel#" : "%#TabLine#"
+        let s .= tc
+        let s .= " "
+
+        let s .= sel ? "%#TabLineSelNr#" : "%#TabLineNr#"
+        let s .= info[0].changed ? "+" : n
+        let s .= " "
+        let s .= tc
+        let file = bufname(buf)
+        let buftype = getbufvar(buf, 'buftype')
+        if file == "NetrwTreeListing"
+            let file = "Tree"
+        elseif buftype == 'nofile'
+            if file =~ '\/.'
+                let file = substitute(file, '.*\/\ze.', '', '')
+            endif
+        else
+            let file = fnamemodify(file, ':p:t')
+        endif
+        if file == ''
+            let file = '[No Name]'
+        endif
+        let s .= file
+
+        let s .= " "
+
+        let n = n + 1
+    endwhile
+    let s .= "%#TabLineFill#"
+    return s
+endfunction
+
 """ Searching
 " Silently search selected word when pressing period in
 " normal mode
@@ -199,6 +269,10 @@ vnoremap / :noh<cr>/\v
 " 2 Spaces
 for ext in ["yaml", "json", "html", "javascript"]
     execute "autocmd FileType ".ext." setlocal shiftwidth=2 softtabstop=2"
+endfor
+" Tab
+for ext in ["make"]
+    execute "autocmd FileType ".ext." setlocal noexpandtab"
 endfor
 
 " Python syntax
